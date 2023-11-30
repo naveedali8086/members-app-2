@@ -115,8 +115,9 @@ const LogIn = ({ goToSection }) => {
           value="Sign In"
         />
         <div className="flex justify-between sm:justify-center pt-8 text-cyan-700">
-          <button className="">Forget Your Password?</button>
+          <button className="" type="button" onClick={()=>{navigate('/forgetpass')}}>Forget Your Password?</button>
           <button
+          type="button"
             onClick={() => goToSection("signup")}
             className="block sm:hidden"
           >
