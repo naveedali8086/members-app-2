@@ -10,10 +10,6 @@ const Account = () => {
         setSection(sectionName);
     }
 
-    const currentSection = section === 'login' ?
-        <LogIn goToSection={goToSection}/> :
-        <SignUp goToSection={goToSection}/>;
-
     return (
         <div className="min-h-[100vh] flex justify-center items-center px-4">
             <div className="border-gray-300 border-4 rounded-md w-[40rem] shadow-md">
@@ -43,7 +39,10 @@ const Account = () => {
 
                 </div>
 
-                {currentSection}
+                {section === 'login' ?
+                    (<LogIn goToSection={goToSection}/>) :
+                    (<SignUp goToSection={goToSection}/>)
+                }
 
             </div>
         </div>
