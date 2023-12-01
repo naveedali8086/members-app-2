@@ -5,8 +5,7 @@ import Pool from "../UserPool";
 const Context = createContext();
 
 const AccountContextProvider = ({children}) => {
-    const getSession = () => {
-    };
+  
 
     const authenticate = async (Username, Password) => {
         return await new Promise((resolve, reject) => {
