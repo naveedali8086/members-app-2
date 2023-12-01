@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
-import UserPool from "../userpool";
+import UserPool from "../UserPool";
 import { RiLoader4Line } from "react-icons/ri";
 const Signup = ({ goToSection }) => {
   const [error, setError] = useState("");
@@ -12,9 +12,15 @@ const Signup = ({ goToSection }) => {
     name: "",
     email: "",
     phone: "",
+    organization: "",
     password: "",
     confirmPassword: "",
   });
+
+  const organizationOptions = [
+    'Sole-trader/Individual',
+    'InSquare Fit'
+  ];
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,6 +42,10 @@ const Signup = ({ goToSection }) => {
           Name: "phone_number", // This is the attribute name for the phone number
           Value: formData.phone, // Use the phone number from your form data
         },
+        {
+          Name: "custom.organization",
+          Value: formData.organization,
+        },
       ],
       null,
       (err, data) => {
@@ -49,6 +59,7 @@ const Signup = ({ goToSection }) => {
               name: "",
               email: "",
               phone: "",
+              organization: "",
               password: "",
               confirmPassword: "",
             });
@@ -139,6 +150,23 @@ const Signup = ({ goToSection }) => {
           className="block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2"
           placeholder="Enter Your Phone Number"
         />
+        <div className=''>
+          <label htmlFor="organization" className="font-semibold">
+            Organization
+          </label>
+          <select onChange={onChange} required
+                  name='organization'
+                  className='block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2'>
+            <option>Please choose one option</option>
+            {organizationOptions.map((option, index) => {
+              return (
+                  <option key={index}>
+                    {option}
+                  </option>
+              );
+            })}
+          </select>
+        </div>
         <label htmlFor="password" className="font-semibold">
           Password
         </label>
@@ -194,8 +222,8 @@ const Signup = ({ goToSection }) => {
           className="w-[100%] bg-cyan-700 text-white font-semibold rounded-sm mt-2 py-2 cursor-pointer  flex justify-center items-center"
           disabled={isLoading}
         >
-          {isLoading && <RiLoader4Line className="animate-spin" />}
-          {isLoading ? "Creating Account" : "Create Account"}
+          Creating Account
+          {isLoading && <RiLoader4Line className="animate-spin text-xl" />}
         </button>
 
         <button

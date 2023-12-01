@@ -88,8 +88,8 @@ const Login = ({ goToSection }) => {
           className="w-[100%] bg-cyan-700 text-white font-semibold rounded-sm mt-2 py-2 cursor-pointer  flex justify-center items-center"
           disabled={isLoading}
         >
-          {isLoading && <RiLoader4Line className="animate-spin" />}
-          {isLoading ? "Login" : "Login"}
+          Login
+          {isLoading && <RiLoader4Line className="animate-spin text-xl" />}
         </button>
         <div className="flex justify-between sm:justify-center pt-8 text-cyan-700">
           <button
@@ -99,7 +99,7 @@ const Login = ({ goToSection }) => {
               navigate("/forgot-password");
             }}
           >
-            Forgot Your Password?
+            Forgot Password?
           </button>
           <button
             type="button"

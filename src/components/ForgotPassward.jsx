@@ -46,8 +46,8 @@ const ForgotPassword = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      console.error("Passwords are not the same");
-      setError("Passwords are not the same");
+      console.error("Password and Confirm Password does not match");
+      setError("Password and Confirm Password does not match");
       return;
     }
 
@@ -89,8 +89,8 @@ const ForgotPassword = () => {
               className="w-[100%] bg-cyan-700 text-white font-semibold rounded-sm mt-2 py-2 cursor-pointer  flex justify-center items-center"
               disabled={isLoading}
             >
-              {isLoading && <RiLoader4Line className="animate-spin" />}
-              {isLoading ? "Send verification code" : "Send verification code"}
+              {isLoading && <RiLoader4Line className="animate-spin text-xl" />}
+              Send verification code
             </button>
           </form>
         )}
@@ -158,8 +158,8 @@ const ForgotPassword = () => {
               className="w-[100%] bg-cyan-700 text-white font-semibold rounded-sm mt-2 py-2 cursor-pointer  flex justify-center items-center"
               disabled={isLoading}
             >
-              {isLoading && <RiLoader4Line className="animate-spin" />}
-              {isLoading ? "Change Password" : "Change Password"}
+               Change Password
+               {isLoading && <RiLoader4Line className="animate-spin text-xl" />}
             </button>
           </form>
         )}
