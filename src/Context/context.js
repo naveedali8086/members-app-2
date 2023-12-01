@@ -1,49 +1,50 @@
-import React, { useState, createContext, useContext } from "react";
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+import React, {createContext, useContext} from "react";
+import {AuthenticationDetails, CognitoUser} from "amazon-cognito-identity-js";
 import Pool from "../userpool";
 
 const Context = createContext();
 
-const AccountContextProvider = ({ children }) => {
-  const getSession = () => {};
+const AccountContextProvider = ({children}) => {
+    const getSession = () => {
+    };
 
     const authenticate = async (Username, Password) => {
-      return await new Promise((resolve, reject) =>{
-          const user = new CognitoUser({
-              Username,
-              Pool,
+        return await new Promise((resolve, reject) => {
+            const user = new CognitoUser({
+                Username,
+                Pool,
             });
-            const authDetailes = new AuthenticationDetails({
-              Username,
-              Password,
+            const authDetails = new AuthenticationDetails({
+                Username,
+                Password,
             });
-            user.authenticateUser(authDetailes, {
-              onSuccess: (data) => {
-                resolve(data);
-              },
-              onFailure: (err) => {
-                reject(err);
-              },
-              newPasswordRequired: (data) => {
-                resolve(data)
-              },
+            user.authenticateUser(authDetails, {
+                onSuccess: (data) => {
+                    resolve(data);
+                },
+                onFailure: (err) => {
+                    reject(err);
+                },
+                newPasswordRequired: (data) => {
+                    resolve(data)
+                },
             });
-      })
+        })
 
     };
 
 
-  return (
-    <>
-      < Context.Provider value={{ authenticate }}>
-        {children}
-      </ Context.Provider>
-    </>
-  );
+    return (
+        <>
+            < Context.Provider value={{authenticate}}>
+                {children}
+            </ Context.Provider>
+        </>
+    );
 };
 
-const Usecontext = ()=>{
+const Usecontext = () => {
     return useContext(Context)
 }
 
-export  {AccountContextProvider , Usecontext};
+export {AccountContextProvider, Usecontext};

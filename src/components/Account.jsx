@@ -16,8 +16,8 @@ const Account = () => {
 
     return (
         <div className="min-h-[100vh] flex justify-center items-center px-4">
-            <div className="border-gray-300 border-4 rounded-md w-[40rem] shadow-md">
-                <div className=" sm:flex font-bold text-xl">
+            <div className="border-gray-300 border-4 rounded-md w-[35rem] shadow-md my-4">
+                <div className="sm:flex font-bold text-xl">
 
                     <button
                         className={`${
