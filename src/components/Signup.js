@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {MdOutlineRemoveRedEye} from "react-icons/md";
 import {FaRegEyeSlash} from "react-icons/fa";
-import UserPool from "../userpool";
+import UserPool from "../UserPool";
 import "react-phone-input-2/lib/style.css";
 
 const Signup = ({goToSection}) => {
@@ -11,9 +11,15 @@ const Signup = ({goToSection}) => {
         name: "",
         email: "",
         phone: "",
+        organization: "",
         password: "",
         confirmPassword: "",
     });
+
+    const organizationOptions = [
+        'Sole-trader/Individual',
+        'InSquare Fit'
+    ];
 
     const onChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -36,6 +42,10 @@ const Signup = ({goToSection}) => {
                     Name: "phone_number", // This is the attribute name for the phone number
                     Value: formData.phone, // Use the phone number from your form data
                 },
+                {
+                    Name: "custom.organization",
+                    Value: formData.organization,
+                },
             ],
             null,
             (err, data) => {
@@ -49,6 +59,7 @@ const Signup = ({goToSection}) => {
                             name: "",
                             email: "",
                             phone: "",
+                            organization: "",
                             password: "",
                             confirmPassword: "",
                         });
@@ -57,11 +68,13 @@ const Signup = ({goToSection}) => {
             }
         );
     };
+
     useEffect(() => {
         if (error) {
             setError("");
         }
     }, [formData]);
+
     return (
         <>
             <p className="px-8 text-red-500">{error ? error : null}</p>
@@ -105,6 +118,25 @@ const Signup = ({goToSection}) => {
                     placeholder="Enter Your Phone Number"
                     required
                 />
+
+                <div className=''>
+                    <label htmlFor="organization" className="font-semibold">
+                        Organization
+                    </label>
+                    <select onChange={onChange} required
+                            name='organization'
+                            className='block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2'>
+                        <option>Please choose one option</option>
+                        {organizationOptions.map((option, index) => {
+                            return (
+                                <option key={index}>
+                                    {option}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+
                 <label htmlFor="password" className="font-semibold">
                     Password
                 </label>

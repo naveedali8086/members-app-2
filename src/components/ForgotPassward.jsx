@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {CognitoUser} from "amazon-cognito-identity-js";
 import {useNavigate} from "react-router-dom";
-import Pool from "../userpool";
+import Pool from "../UserPool";
 
 const ForgotPassword = () => {
     const navigate = useNavigate();

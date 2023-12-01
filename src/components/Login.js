@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {MdOutlineRemoveRedEye} from "react-icons/md";
 import {FaRegEyeSlash} from "react-icons/fa";
-import {Usecontext} from "../Context/context";
+import {Usecontext} from "../Context/Context";
 import {useNavigate} from "react-router-dom";
 
 const Login = ({goToSection}) => {
@@ -17,37 +17,7 @@ const Login = ({goToSection}) => {
     const onChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
-    //   const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     UserPool.signUp(
-    //       formData.email,
-    //       formData.password,
-    //       [
-    //         {
-    //           Name: "name",
-    //           Value: formData.name,
-    //         },
-    //         {
-    //           Name: "email",
-    //           Value: formData.email,
-    //         },
-    //       ],
-    //       null,
-    //       (err, data) => {
-    //         if (err) {
-    //           setError(err.message);
-    //         } else {
-    //           console.log("Successfully signed in:", data);
-    //           if (data.success) {
-    //             setFormData({
-    //               email: "",
-    //               password: "",
-    //             });
-    //           }
-    //         }
-    //       }
-    //     );
-    //   };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
