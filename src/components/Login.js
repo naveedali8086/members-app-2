@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import {MdOutlineRemoveRedEye} from "react-icons/md";
-import UserPool from "../userpool";
+import {AuthenticationDetails, CognitoUser} from "amazon-cognito-identity-js";
+import UserPool from "../UserPool";
 import {FaRegEyeSlash} from "react-icons/fa";
 
-const LogIn = ({goToSection}) => {
+const Login = ({goToSection}) => {
 
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -15,36 +16,35 @@ const LogIn = ({goToSection}) => {
     const onChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        UserPool.signUp(
-            formData.email,
-            formData.password,
-            [
-                {
-                    Name: "name",
-                    Value: formData.name,
-                },
-                {
-                    Name: "email",
-                    Value: formData.email,
-                },
-            ],
-            null,
-            (err, data) => {
-                if (err) {
-                    setError(err.message);
-                } else {
-                    console.log("Successfully signed in:", data);
-                    if (data.success) {
-                        setFormData({
-                            email: "",
-                            password: "",
-                        });
-                    }
-                }
+
+        const user = new CognitoUser({
+            Username: formData.email,
+            Pool: UserPool
+        });
+
+        const authDetails = new AuthenticationDetails({
+            Username: formData.email,
+            Password: formData.password
+        });
+
+        user.authenticateUser(authDetails, {
+            onSuccess: (data) => {
+                console.log("onSuccess: ", data);
+                setFormData({
+                    email: "",
+                    password: "",
+                });
+            },
+            onFailure: (err) => {
+                setError(err.message);
+            },
+            newPasswordRequired: (data) => {
+                console.log("newPasswordRequired: ", data);
             }
-        );
+        })
+
     };
 
     return (
@@ -102,7 +102,7 @@ const LogIn = ({goToSection}) => {
                     value="Sign In"
                 />
                 <div className="flex justify-between sm:justify-center pt-8 text-cyan-700">
-                    <button className="">Forget Your Password?</button>
+                    <button onClick={() => goToSection("forgot-password")}>Forget Your Password?</button>
                     <button
                         onClick={() => goToSection("signup")}
                         className="block sm:hidden"
@@ -115,4 +115,4 @@ const LogIn = ({goToSection}) => {
     );
 };
 
-export default LogIn;
+export default Login;

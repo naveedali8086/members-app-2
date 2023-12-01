@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {MdOutlineRemoveRedEye} from "react-icons/md";
 import {FaRegEyeSlash} from "react-icons/fa";
-import UserPool from "../userpool";
+import UserPool from "../UserPool";
 
-const SignUp = ({goToSection}) => {
+const Signup = ({goToSection}) => {
 
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +11,7 @@ const SignUp = ({goToSection}) => {
         name: "",
         email: "",
         phone: "",
+        organization: "",
         password: "",
         confirmPassword: "",
     });
@@ -32,6 +33,10 @@ const SignUp = ({goToSection}) => {
                     Name: "email",
                     Value: formData.email,
                 },
+                {
+                    Name: "organization",
+                    Value: formData.organization,
+                },
             ],
             null,
             (err, data) => {
@@ -44,6 +49,7 @@ const SignUp = ({goToSection}) => {
                             name: "",
                             email: "",
                             phone: "",
+                            organization: "",
                             password: "",
                             confirmPassword: "",
                         });
@@ -52,6 +58,11 @@ const SignUp = ({goToSection}) => {
             }
         );
     };
+
+    const organizationOptions = [
+        'Sole-trader/Individual',
+        'InSquare Fit'
+    ];
 
     return (
         <>
@@ -73,6 +84,7 @@ const SignUp = ({goToSection}) => {
                     placeholder="Enter Your Name"
                     required
                 />
+
                 <label htmlFor="email" className="font-semibold">
                     Email
                 </label>
@@ -86,6 +98,7 @@ const SignUp = ({goToSection}) => {
                     placeholder="Enter Your Email"
                     required
                 />
+
                 <label htmlFor="phone" className="font-semibold">
                     Phone Number
                 </label>
@@ -99,6 +112,25 @@ const SignUp = ({goToSection}) => {
                     placeholder="Enter Your Phone Number"
                     required
                 />
+
+                <div className=''>
+                    <label htmlFor="organization" className="font-semibold">
+                        Organization
+                    </label>
+                    <select onChange={onChange} required
+                            name='organization'
+                            className='block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2'>
+                        <option>Please choose one option</option>
+                        {organizationOptions.map((option, index) => {
+                            return (
+                                <option key={index}>
+                                    {option}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+
                 <label htmlFor="password" className="font-semibold">
                     Password
                 </label>
@@ -125,6 +157,7 @@ const SignUp = ({goToSection}) => {
                         }
                     </button>
                 </div>
+
                 <label htmlFor="confirmPassword" className="font-semibold">
                     Re-Password
                 </label>
@@ -151,20 +184,23 @@ const SignUp = ({goToSection}) => {
                         }
                     </button>
                 </div>
+
                 <input
                     type="submit"
                     className="w-[100%] bg-cyan-700 text-white font-semibold rounded-sm mt-2 py-2"
                     value="Create Account"
                 />
+
                 <button
                     onClick={() => goToSection("login")}
                     className="mt-2 text-cyan-700 sm:hidden"
                 >
                     Already Register?
                 </button>
+
             </form>
         </>
     );
 };
 
-export default SignUp;
+export default Signup;
