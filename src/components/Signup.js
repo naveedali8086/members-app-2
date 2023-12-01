@@ -5,7 +5,7 @@ import UserPool from "../userpool";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-const SignUp = ({ goToSection }) => {
+const Signup = ({ goToSection }) => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -166,4 +166,4 @@ const SignUp = ({ goToSection }) => {
   );
 };
 
-export default SignUp;
+export default Signup;

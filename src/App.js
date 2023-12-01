@@ -1,6 +1,6 @@
 import Account from "./components/Account";
 import Users from "./components/Users";
-import ForgetPassword from "./components/ForgetPass";
+import ForgotPassword from "./components/ForgotPassward";
 import Header from "./components/Header";
 import {Route , Routes} from "react-router-dom"
 function App() {
@@ -9,7 +9,7 @@ function App() {
             <Header/>
             <Routes>
                 <Route path='/' element={ <Account/>}/>
-                <Route path='/forgetpass' element={<ForgetPassword/>}/>
+                <Route path='/forgot-password' element={<ForgotPassword/>}/>
                 <Route path='/users' element={<Users/>}/>
             </Routes>
         </main>

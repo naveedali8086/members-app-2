@@ -3,7 +3,7 @@ import { CognitoUser } from "amazon-cognito-identity-js";
 import { useNavigate } from "react-router-dom";
 import Pool from "../userpool";
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const [stage, setStage] = useState(1);
   const [email, setEmail] = useState("");
@@ -115,4 +115,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;

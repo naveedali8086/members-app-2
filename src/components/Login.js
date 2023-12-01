@@ -4,7 +4,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { Usecontext } from "../Context/context";
 import { useNavigate } from "react-router-dom";
 
-const LogIn = ({ goToSection }) => {
+const Login = ({ goToSection }) => {
   const navigate = useNavigate();
   const { authenticate } = Usecontext();
   const [error, setError] = useState("");
@@ -115,7 +115,7 @@ const LogIn = ({ goToSection }) => {
           value="Sign In"
         />
         <div className="flex justify-between sm:justify-center pt-8 text-cyan-700">
-          <button className="" type="button" onClick={()=>{navigate('/forgetpass')}}>Forget Your Password?</button>
+          <button className="" type="button" onClick={()=>{navigate('/forgot-password')}}>Forgot Your Password?</button>
           <button
           type="button"
             onClick={() => goToSection("signup")}
@@ -129,4 +129,4 @@ const LogIn = ({ goToSection }) => {
   );
 };
 
-export default LogIn;
+export default Login;

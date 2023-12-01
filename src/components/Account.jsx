@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import SignUp from "./SignUp";
-import LogIn from "./LogIn";
+import Signup from "./Signup";
+import Login from "./Login";
 
 const Account = () => {
 
@@ -11,8 +11,8 @@ const Account = () => {
     }
 
     const currentSection = section === 'login' ?
-        <LogIn goToSection={goToSection}/> :
-        <SignUp goToSection={goToSection}/>;
+        <Login goToSection={goToSection}/> :
+        <Signup goToSection={goToSection}/>;
 
     return (
         <div className="min-h-[100vh] flex justify-center items-center px-4">
