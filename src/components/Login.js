@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
-import {Usecontext} from "../Context/Context";
+import { Usecontext } from "../Context/Context";
 import { useNavigate } from "react-router-dom";
 import { RiLoader4Line } from "react-icons/ri";
 
@@ -24,16 +24,17 @@ const Login = ({ goToSection }) => {
     e.preventDefault();
     setError("");
     try {
-        setIsLoading(true)
-        const data = await authenticate(formData.email, formData.password);
+      setIsLoading(true);
+      const data = await authenticate(formData.email, formData.password);
       if (data) {
         console.log("on success:", data);
         navigate("/users");
+        setIsLoading(false);
         setFormData({ email: "", password: "" });
       }
     } catch (err) {
       setError(err.message);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -76,9 +77,15 @@ const Login = ({ goToSection }) => {
           />
           <button className="px-3 cursor-pointer" type="button">
             {showPassword ? (
-              <MdOutlineRemoveRedEye  type="button" onClick={() => setShowPassword(false)} />
+              <MdOutlineRemoveRedEye
+                type="button"
+                onClick={() => setShowPassword(false)}
+              />
             ) : (
-              <FaRegEyeSlash  type="button" onClick={() => setShowPassword(true)} />
+              <FaRegEyeSlash
+                type="button"
+                onClick={() => setShowPassword(true)}
+              />
             )}
           </button>
         </div>

@@ -6,8 +6,11 @@ import { RiLoader4Line } from "react-icons/ri";
 const Signup = ({ goToSection }) => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [inputType, setInputType] = useState({
+    password: "password",
+    password2: "password",
+  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,12 +19,7 @@ const Signup = ({ goToSection }) => {
     password: "",
     confirmPassword: "",
   });
-
-  const organizationOptions = [
-    'Sole-trader/Individual',
-    'InSquare Fit'
-  ];
-
+  const organizationOptions = ["Sole-trader/Individual", "InSquare Fit"];
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -43,7 +41,7 @@ const Signup = ({ goToSection }) => {
           Value: formData.phone, // Use the phone number from your form data
         },
         {
-          Name: "custom.organization",
+          Name: "custom:organization",
           Value: formData.organization,
         },
       ],
@@ -51,10 +49,12 @@ const Signup = ({ goToSection }) => {
       (err, data) => {
         if (err) {
           setError(err.message);
+          setIsLoading(false);
         } else {
           console.log("Successfully signed up:", data);
           if (data) {
             goToSection("login");
+            setIsLoading(false);
             setFormData({
               name: "",
               email: "",
@@ -86,6 +86,9 @@ const Signup = ({ goToSection }) => {
       message.requirePassword =
         "Password must contain at least 8 characters, 1 number, 1 special character, 1 uppercase letter, and 1 lowercase letter";
     }
+    if (formData.organization === "") {
+      message.requireOrgnization = "Organization must";
+    }
     if (formData.password === "") {
       message.requireConfirmPassword = "Password is required";
     }
@@ -99,7 +102,12 @@ const Signup = ({ goToSection }) => {
       handle1();
     }
   };
-
+  const ToggleInputType = (field) => {
+    setInputType((prevInputType) => ({
+      ...prevInputType,
+      [field]: prevInputType[field] === "password" ? "text" : "password",
+    }));
+  };
   useEffect(() => {
     if (message) {
       setMessage("");
@@ -150,23 +158,34 @@ const Signup = ({ goToSection }) => {
           className="block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2"
           placeholder="Enter Your Phone Number"
         />
-        <div className=''>
+        <div className="">
           <label htmlFor="organization" className="font-semibold">
             Organization
           </label>
-          <select onChange={onChange} required
-                  name='organization'
-                  className='block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2'>
-            <option>Please choose one option</option>
+          <select
+            onChange={onChange}
+            id="organization"
+            value={formData.organization}
+            name="organization"
+            className={` ${
+              formData.organization ? "text-black" : "text-[#a9a9a9]"
+            } block mt-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2`}
+          >
+            <option disabled value="" className="text-[#a9a9a9]">
+              Please choose one option
+            </option>
             {organizationOptions.map((option, index) => {
               return (
-                  <option key={index}>
-                    {option}
-                  </option>
+                <option value={option} className="text-black" key={index}>
+                  {option}
+                </option>
               );
             })}
           </select>
         </div>
+        <p className="text-xs text-red-500 mb-2">
+          {message?.requireOrgnization}
+        </p>
         <label htmlFor="password" className="font-semibold">
           Password
         </label>
@@ -174,17 +193,19 @@ const Signup = ({ goToSection }) => {
           <input
             id="password"
             name="password"
-            type={showPassword ? "text" : "password"}
+            type={inputType.password}
             onChange={onChange}
             value={formData.password}
             className="block  w-[100%] outline-none border-r-2  p-2"
             placeholder="Password"
           />
           <button className="px-3 cursor-pointer" type="button">
-            {showPassword ? (
-              <MdOutlineRemoveRedEye  type="button" onClick={() => setShowPassword(false)} />
+            {inputType.password !== "password" ? (
+              <MdOutlineRemoveRedEye
+                onClick={() => ToggleInputType("password")}
+              />
             ) : (
-              <FaRegEyeSlash  type="button" onClick={() => setShowPassword(true)} />
+              <FaRegEyeSlash onClick={() => ToggleInputType("password")} />
             )}
           </button>
         </div>
@@ -196,17 +217,19 @@ const Signup = ({ goToSection }) => {
           <input
             id="confirmPassword"
             name="confirmPassword"
-            type={showPassword ? "text" : "password"}
+            type={inputType.password2}
             onChange={onChange}
             value={formData.confirmPassword}
             className="block  w-[100%] outline-none border-r-2  p-2"
             placeholder="Re-Password"
           />
           <button className="px-3 cursor-pointer" type="button">
-            {showPassword ? (
-              <MdOutlineRemoveRedEye type="button" onClick={() => setShowPassword(false)} />
+            {inputType.password2 !== "password" ? (
+              <MdOutlineRemoveRedEye
+                onClick={() => ToggleInputType("password2")}
+              />
             ) : (
-              <FaRegEyeSlash type="button" onClick={() => setShowPassword(true)} />
+              <FaRegEyeSlash onClick={() => ToggleInputType("password2")} />
             )}
           </button>
         </div>
