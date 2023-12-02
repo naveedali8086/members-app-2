@@ -56,7 +56,7 @@ const ForgotPassword = () => {
     getUser().confirmPassword(code, password, {
       onSuccess: (data) => {
         console.log("onSuccess:", data);
-        navigate("/");
+        navigate("/account");
         setIsLoading(false);
         setCode("")
         setPassword("")
@@ -167,7 +167,7 @@ const ForgotPassword = () => {
                 type="button"
                 onClick={() => {
                   if (stage === 1) {
-                    navigate("/");
+                    navigate("/account");
                     setIsLoading(false);
                   } else {
                     setStage(1);
