@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { Usecontext } from "../Context/Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link } from "react-router-dom";
 import { RiLoader4Line } from "react-icons/ri";
-
 const Login = ({ goToSection }) => {
   const navigate = useNavigate();
-  const { authenticate } = Usecontext();
+  const { authenticate, getSession } = Usecontext();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +14,7 @@ const Login = ({ goToSection }) => {
     email: "",
     password: "",
   });
+
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -102,11 +102,11 @@ const Login = ({ goToSection }) => {
           <button
             className=""
             type="button"
-            onClick={() => {
-              navigate("/forgot-password");
-            }}
+             onClick={() => {
+               navigate("forgot-password");
+             }}
           >
-            Forgot Password?
+             Forgot Password?
           </button>
           <button
             type="button"

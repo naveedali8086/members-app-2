@@ -58,7 +58,7 @@ const ForgotPassword = () => {
     getUser().confirmPassword(code, password, {
       onSuccess: (data) => {
         console.log("onSuccess:", data);
-        navigate("/");
+        navigate("/accounts");
         setIsLoading(false);
         setCode("")
         setPassword("")
