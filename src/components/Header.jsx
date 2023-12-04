@@ -18,16 +18,15 @@ const Header = () => {
   const handleLandingPge = () => {
     navigate("/");
   };
-  const handleAccout = () => {
-    navigate("/accounts");
+  const handleAccount = () => {
+    navigate("/account");
   };
-  // console.log(isAuthenticated);
   return (
     <main className="sticky top-[1px] shadow-lg">
       <nav className="w-[100%] py-2 sm:py-4 px-10 bg-header flex items-center justify-between">
         <img
           className="cursor-pointer w-[8rem] sm:w-[12rem] "
-          src="/LOGO.png"
+          src="/logo.png"
           alt=""
           onClick={handleLandingPge}
         />
@@ -38,13 +37,12 @@ const Header = () => {
             size={buttonSize}
             orientation="horizontal"
             color="info"
-            // disableElevation
             aria-label="alignment group button"
           >
             {isAuthenticated ? (
               <Button onClick={logout}>LOGOUT</Button>
             ) : (
-              <Button onClick={handleAccout}>ACCOUT</Button>
+              <Button onClick={handleAccount}>ACCOUNT</Button>
             )}
           </ButtonGroup>
         </Stack>

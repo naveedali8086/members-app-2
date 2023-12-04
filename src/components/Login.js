@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { Usecontext } from "../Context/Context";
-import { useNavigate ,Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RiLoader4Line } from "react-icons/ri";
 const Login = ({ goToSection }) => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const Login = ({ goToSection }) => {
       setIsLoading(true);
       const data = await authenticate(formData.email, formData.password);
       if (data) {
-        // console.log("on success:", data);
+        console.log("on success:", data);
         navigate("/users");
         setIsLoading(false);
         setFormData({ email: "", password: "" });
@@ -97,7 +97,7 @@ const Login = ({ goToSection }) => {
                 className=""
                 type="button"
                 onClick={() => {
-                  navigate("/forgot-password");
+                  navigate("/account/forgot-password");
                 }}
             >
               Forgot Password?

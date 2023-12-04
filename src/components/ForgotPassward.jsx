@@ -33,7 +33,7 @@ const ForgotPassword = () => {
         setIsLoading(false)
       },
       onFailure: (err) => {
-        console.error("onFailure:", err);
+        console.log("onFailure:", err);
         setError(err.message);
         setIsLoading(false)
       },
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
     event.preventDefault();
     setIsLoading(true);
     if (password !== confirmPassword) {
-      console.error("Password and Confirm Password does not match");
+      console.log("Password and Confirm Password does not match");
       setError("Password and Confirm Password does not match");
       return;
     }
@@ -56,14 +56,14 @@ const ForgotPassword = () => {
     getUser().confirmPassword(code, password, {
       onSuccess: (data) => {
         console.log("onSuccess:", data);
-        navigate("/accounts");
+        navigate("/account");
         setIsLoading(false);
         setCode("")
         setPassword("")
         setConfirmPassword("")
       },
       onFailure: (err) => {
-        console.error("onFailure:", err);
+        console.log("onFailure:", err);
         setError(err.message);
         setIsLoading(false);
       },

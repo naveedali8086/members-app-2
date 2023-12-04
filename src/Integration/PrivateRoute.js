@@ -5,7 +5,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated, path }) => {
   return (
     <Route
       path={path}
-      element={isAuthenticated ? <Component /> : <Navigate to="/accounts" />}
+      element={isAuthenticated ? <Component /> : <Navigate to="/account" />}
     />
   );
 };

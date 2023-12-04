@@ -1,52 +1,30 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import Pool from "../UserPool";
+import {useNavigate} from "react-router-dom";
 
 const Context = createContext();
 const AccountContextProvider = ({ children }) => {
-  // const naviagte = useNavigate()
+  const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const getSession = async () =>
-    await new Promise((resolve, reject) => {
+  const getSession = async () => {
+    return await new Promise( (resolve, reject) => {
       const user = Pool.getCurrentUser();
       if (user) {
-        user.getSession(async (err, session) => {
-          if (err) {
-            reject(err);
+        user.getSession( (error, session) => {
+          if (error) {
+            reject()
           } else {
-            const attributes = await new Promise((resolve, reject) => {
-              user.getUserAttributes((err, attributes) => {
-                if (err) {
-                  reject(err);
-                } else {
-                  const results = {};
-
-                  for (let attribute of attributes) {
-                    const { Name, Value } = attribute;
-                    results[Name] = Value;
-                  }
-
-                  resolve(results);
-                }
-              });
-            });
-            const token = session.getIdToken().getJwtToken();
-
-            resolve({
-              user,
-              headers: {
-                Authorization: token,
-              },
-              ...session,
-              ...attributes,
-            });
+            resolve(session)
           }
-        });
+        })
       } else {
+        console.log('user was not found')
         reject();
       }
-    });
+    })
+  }
   useEffect(() => {
     getSession()
       .then((session) => {
@@ -54,7 +32,7 @@ const AccountContextProvider = ({ children }) => {
         setIsAuthenticated(true);
       })
       .catch((error) => {
-        console.error("Error getting session:", error);
+        console.log("Error getting session:", error);
       });
   }, [isLogin]);
   const authenticate = async (Username, Password) => {
@@ -87,6 +65,9 @@ const AccountContextProvider = ({ children }) => {
       user.signOut();
       setIsAuthenticated(false);
       setIsLogin(false)
+      navigate('/account')
+    } else {
+      console.log('Logging out failed, please try again')
     }
   };
   console.log(isAuthenticated);

@@ -6,7 +6,7 @@ import ForgotPassword from "./components/ForgotPassward";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 
-export function AccountRoutes() {
+export function NonAuthenticatedRoutes() {
   return (
     <Routes>
       <Route index element={<Account />} />
@@ -23,11 +23,13 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/users" element={<Users />} />
+        <Route path="/users" element={
+            isAuthenticated ? <Users /> : <Navigate to="/account" />
+        } />
         <Route
-          path="/accounts/*"
+          path="/account/*"
           element={
-            isAuthenticated ? <Navigate to="/users" /> : <AccountRoutes />
+            isAuthenticated ? <Navigate to="/users" /> : <NonAuthenticatedRoutes />
           }
         />
       </Routes>
