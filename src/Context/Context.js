@@ -13,11 +13,36 @@ const AccountContextProvider = ({ children }) => {
     await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
       if (user) {
-        user.getSession((err, session) => {
+        user.getSession(async (err, session) => {
           if (err) {
             reject(err);
           } else {
-            resolve(session);
+            const attributes = await new Promise((resolve, reject) => {
+              user.getUserAttributes((err, attributes) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  const results = {};
+
+                  for (let attribute of attributes) {
+                    const { Name, Value } = attribute;
+                    results[Name] = Value;
+                  }
+
+                  resolve(results);
+                }
+              });
+            });
+            const token = session.getIdToken().getJwtToken();
+
+            resolve({
+              user,
+              headers: {
+                Authorization: token,
+              },
+              ...session,
+              ...attributes,
+            });
           }
         });
       } else {
@@ -34,7 +59,6 @@ const AccountContextProvider = ({ children }) => {
         console.error("Error getting session:", error);
       });
   }, [isLogin]);
-
   const authenticate = async (Username, Password) => {
     return await new Promise((resolve, reject) => {
       const user = new CognitoUser({
@@ -64,8 +88,10 @@ const AccountContextProvider = ({ children }) => {
     if (user) {
       user.signOut();
       setIsAuthenticated(false);
+      setIsLogin(false)
     }
   };
+  console.log(isAuthenticated);
   return (
     <>
       <Context.Provider

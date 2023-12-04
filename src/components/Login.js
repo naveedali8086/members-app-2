@@ -6,7 +6,7 @@ import { useNavigate ,Link } from "react-router-dom";
 import { RiLoader4Line } from "react-icons/ri";
 const Login = ({ goToSection }) => {
   const navigate = useNavigate();
-  const { authenticate, getSession } = Usecontext();
+  const { authenticate} = Usecontext();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +27,7 @@ const Login = ({ goToSection }) => {
       setIsLoading(true);
       const data = await authenticate(formData.email, formData.password);
       if (data) {
-        console.log("on success:", data);
+        // console.log("on success:", data);
         navigate("/users");
         setIsLoading(false);
         setFormData({ email: "", password: "" });

@@ -17,6 +17,7 @@ const Header = () => {
     const handleAccout = ()=>{
         navigate('/accounts')
     }
+    // console.log(isAuthenticated);
   return (
     <main className="sticky top-[1px] shadow-lg">
       <nav className="w-[100%] py-2 sm:py-4 px-10 bg-header flex items-center justify-between">
