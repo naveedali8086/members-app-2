@@ -56,11 +56,7 @@ const ForgotPassword = () => {
     getUser().confirmPassword(code, password, {
       onSuccess: (data) => {
         console.log("onSuccess:", data);
-<<<<<<< HEAD
         navigate("/accounts");
-=======
-        navigate("/account");
->>>>>>> cf52124668bd10f839dffc4171d58583fae9e6a3
         setIsLoading(false);
         setCode("")
         setPassword("")
