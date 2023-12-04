@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import Pool from "../UserPool";
 
 const Context = createContext();
 
 const AccountContextProvider = ({ children }) => {
-    // const naviagte = useNavigate()
+  // const naviagte = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const getSession = async () =>
@@ -32,8 +32,6 @@ const AccountContextProvider = ({ children }) => {
       })
       .catch((error) => {
         console.error("Error getting session:", error);
-        // naviagte("/accounts")
-        // Handle the error, you might want to redirect to a login page or do other actions.
       });
   }, [isLogin]);
 
@@ -65,12 +63,14 @@ const AccountContextProvider = ({ children }) => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
-      setIsAuthenticated(false)
+      setIsAuthenticated(false);
     }
-  }
+  };
   return (
     <>
-      <Context.Provider value={{ authenticate, getSession , logout ,isAuthenticated}}>
+      <Context.Provider
+        value={{ authenticate, getSession, logout, isAuthenticated }}
+      >
         {children}
       </Context.Provider>
     </>
