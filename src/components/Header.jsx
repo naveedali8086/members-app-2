@@ -22,8 +22,8 @@ const Header = () => {
     navigate("/account");
   };
   return (
-    <main className="sticky top-[1px] shadow-lg">
-      <nav className="w-[100%] py-2 sm:py-4 px-10 bg-header flex items-center justify-between">
+    <main className="sticky top-[1px] shadow-lg z-50">
+      <nav className="w-[100%] py-2 sm:py-4 px-2 sm:px-10 bg-header flex items-center justify-between">
         <img
           className="cursor-pointer w-[8rem] sm:w-[12rem] "
           src="/logo.png"

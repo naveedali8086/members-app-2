@@ -1,12 +1,183 @@
-import React from 'react'
-
+import React, { useState, useEffect } from "react";
+import Spinner from "../Assets/Loader";
+import Tablerow from "../Assets/TableRow";
+import PopUp from "../Assets/Popup";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Button,
+  Box,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { BASE_URL } from "../utils/BaseUrl";
 const Users = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const buttonSize = isSmallScreen ? "small" : "large";
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [userList, setUserList] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
+  const [error, setError] = useState("");
+  const [showPopUp, setShowPopUp] = useState("users");
+  const API_KEY =
+    "Wu5OJfZWu5OJfZe8OPbJRcDfbT7ZDQQquojRj1zHrkWkVonVQRhD3kpAs6ILGV8R0ROAn1exsHameKvmqOp3qjte8OPbJRcDfbT7ZDQQquojRj1zHrkWkVonVQRhD3kpAs6ILGV8R0ROAn1exsHameKvmqOp3qjt";
 
-    return (
-        <div className="font-bold text-2xl">
-            This would a members list
+  const GET_USERS_LIST = async () => {
+    setIsloading(true);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `key ${API_KEY}`,
+        },
+      };
+      const res = await BASE_URL.get("/users");
+      if (res.status !== 200) {
+        throw new Error(`Could not get users. Status: ${res.status}`);
+      }
+      setUserList(res.data);
+      setIsloading(false);
+    } catch (err) {
+      setError(err.message);
+      setIsloading(false);
+      console.error(err);
+    } finally {
+      setIsloading(false);
+    }
+  };
+  useEffect(() => {
+    GET_USERS_LIST();
+  }, []);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
+  console.log(showPopUp);
+  return (
+    <>
+      <main className="min-h-[100vh] p-2 sm:p-4 container mx-auto  bg-gray-100 ">
+        {isLoading ? (
+          <span className=" h-[100vh] flex justify-center items-center">
+            <Spinner />
+          </span>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div
+            className={`${
+              showPopUp === "users" ? "block" : "hidden"
+            } w-[100%]  `}
+          >
+            <Box
+              p="10px 0px"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "20px",
+              }}
+            >
+              <Button
+                size={buttonSize}
+                onClick={() => setShowPopUp("popup")}
+                variant="contained"
+              >
+                Add Member
+              </Button>
+              <Button size={buttonSize} variant="contained">
+                Generate
+              </Button>
+            </Box>
+            <Box pb="10px">
+              <TextField
+                name="name"
+                variant="outlined"
+                label="Search"
+                type="text"
+                color="primary"
+              />
+            </Box>
+            <Paper
+              sx={{
+                width: "100%",
+                overflowX: isSmallScreen ? "scroll" : "auto",
+              }}
+            >
+              <TableContainer sx={{ maxHeight: "auto", minWidth: "768px" }}>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="" colSpan={1}>
+                        Sr
+                      </TableCell>
+                      <TableCell align="" colSpan={1}>
+                        User Name
+                      </TableCell>
+                      <TableCell align="" colSpan={1}>
+                        Name
+                      </TableCell>
+                      <TableCell align="" colSpan={1}>
+                        Email
+                      </TableCell>
+                      <TableCell align="" colSpan={1}>
+                        Phone
+                      </TableCell>
+                      <TableCell align="" colSpan={1}>
+                        Website
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {userList?.length > 0
+                      ? userList
+                          .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                          )
+                          .map((row, i) => {
+                            return (
+                              <TableRow hover key={row.id}>
+                                <Tablerow row={row} index={i} />
+                              </TableRow>
+                            );
+                          })
+                      : null}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 20, 25]}
+                component="div"
+                count={userList?.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Paper>
+          </div>
+        )}
+
+        <div
+          className={` ${showPopUp === "popup" ? "block" : "hidden"} relative `}
+        >
+          <PopUp setShowPopUp={setShowPopUp} />
         </div>
-    )
+      </main>
+    </>
+  );
 };
 
-export default Users
+export default Users;

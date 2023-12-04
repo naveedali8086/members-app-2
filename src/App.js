@@ -5,7 +5,6 @@ import Users from "./components/Users";
 import ForgotPassword from "./components/ForgotPassward";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
-
 export function NonAuthenticatedRoutes() {
   return (
     <Routes>
