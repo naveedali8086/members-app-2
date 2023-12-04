@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
-import { useNavigate } from "react-router-dom";
 import Pool from "../UserPool";
 
 const Context = createContext();
-
 const AccountContextProvider = ({ children }) => {
   // const naviagte = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
