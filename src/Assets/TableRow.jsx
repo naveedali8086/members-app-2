@@ -4,18 +4,18 @@ import { TableCell } from "@mui/material";
 const Tablerow = ({row , index}) => {
   return (
     <>
-      <TableCell align="">{index + 1}</TableCell>
+      <TableCell align="inherit">{index + 1}</TableCell>
       <TableCell style={{ color: "blue", cursor: "pointer" }} align="">
         {row.username}
-      </TableCell>
-      <TableCell align="">{row.name}</TableCell>
-      <TableCell align="">
+      </TableCell >
+      <TableCell align="inherit" >{row.name}</TableCell>
+      <TableCell >
        {row.email}
       </TableCell>
-      <TableCell align="">
+      <TableCell align="inherit" >
        {row.phone}
       </TableCell>
-      <TableCell align="">
+      <TableCell align="inherit">
        {row.website}
       </TableCell>
     </>

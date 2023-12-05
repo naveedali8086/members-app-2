@@ -1,17 +1,10 @@
 import React from "react";
 import { ImCross } from "react-icons/im";
 
-const PopUp = ({setShowPopUp}) => {
+const PopUp = () => {
   return (
-    <main
-      id="content"
-      role="main"
-      className="w-full max-w-md mx-auto p-6 "
-    >
+    <main id="content" role="main" className="w-full max-w-md mx-auto p-6 ">
       <div className="mt-7 bg-white  rounded-xl shadow-lg ">
-        <div className="flex justify-end p-4">
-          <ImCross onClick={ ()=> setShowPopUp("users")} className="hover:text-blue-500 cursor-pointer" />
-        </div>
         <div className="p-4 ">
           <div className="text-center">
             <h1 className="block text-2xl font-bold text-gray-800  underline">
@@ -24,7 +17,7 @@ const PopUp = ({setShowPopUp}) => {
               <div className="grid gap-y-4">
                 <div>
                   <label
-                    for="first-name"
+                    htmlFor="first-name"
                     className="block text-sm font-bold ml-1 mb-2 "
                   >
                     First Name
@@ -49,7 +42,7 @@ const PopUp = ({setShowPopUp}) => {
 
                 <div>
                   <label
-                    for="last-name"
+                    htmlFor="last-name"
                     className="block text-sm font-bold ml-1 mb-2 "
                   >
                     Last Name
@@ -74,7 +67,7 @@ const PopUp = ({setShowPopUp}) => {
 
                 <div>
                   <label
-                    for="address"
+                    htmlFor="address"
                     className="block text-sm font-bold ml-1 mb-2 "
                   >
                     Address
@@ -99,7 +92,7 @@ const PopUp = ({setShowPopUp}) => {
 
                 <div>
                   <label
-                    for="member-type"
+                    htmlFor="member-type"
                     className="block text-sm font-bold ml-1 mb-2 "
                   >
                     Member Type

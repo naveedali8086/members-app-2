@@ -27,7 +27,7 @@ const Users = () => {
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
-  const [showPopUp, setShowPopUp] = useState("users");
+  const [showPopUp, setShowPopUp] = useState(false);
   const API_KEY =
     "Wu5OJfZWu5OJfZe8OPbJRcDfbT7ZDQQquojRj1zHrkWkVonVQRhD3kpAs6ILGV8R0ROAn1exsHameKvmqOp3qjte8OPbJRcDfbT7ZDQQquojRj1zHrkWkVonVQRhD3kpAs6ILGV8R0ROAn1exsHameKvmqOp3qjt";
 
@@ -65,7 +65,6 @@ const Users = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  console.log(showPopUp);
   return (
     <>
       <main className="min-h-[100vh] p-2 sm:p-4 container mx-auto  bg-gray-100 ">
@@ -77,9 +76,9 @@ const Users = () => {
           <p>{error}</p>
         ) : (
           <div
-            className={`${
-              showPopUp === "users" ? "block" : "hidden"
-            } w-[100%]  `}
+            className={`
+             
+             w-[100%]  `}
           >
             <Box
               p="10px 0px"
@@ -91,7 +90,7 @@ const Users = () => {
             >
               <Button
                 size={buttonSize}
-                onClick={() => setShowPopUp("popup")}
+                onClick={() => setShowPopUp(true)}
                 variant="contained"
               >
                 Add Member
@@ -119,22 +118,22 @@ const Users = () => {
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="" colSpan={1}>
+                      <TableCell align="inherit" colSpan={1}>
                         Sr
                       </TableCell>
-                      <TableCell align="" colSpan={1}>
+                      <TableCell align="inherit" colSpan={1}>
                         User Name
                       </TableCell>
-                      <TableCell align="" colSpan={1}>
+                      <TableCell align="inherit" colSpan={1}>
                         Name
                       </TableCell>
-                      <TableCell align="" colSpan={1}>
+                      <TableCell align="inherit" colSpan={1}>
                         Email
                       </TableCell>
-                      <TableCell align="" colSpan={1}>
+                      <TableCell align="inherit" colSpan={1}>
                         Phone
                       </TableCell>
-                      <TableCell align="" colSpan={1}>
+                      <TableCell align="inherit" colSpan={1}>
                         Website
                       </TableCell>
                     </TableRow>
@@ -169,13 +168,15 @@ const Users = () => {
             </Paper>
           </div>
         )}
-
-        <div
-          className={` ${showPopUp === "popup" ? "block" : "hidden"} relative `}
-        >
-          <PopUp setShowPopUp={setShowPopUp} />
-        </div>
       </main>
+      <div
+        className={` ${
+          showPopUp ? "block" : "hidden"
+        } top-10 fixed w-[100%] h-[100%] bg-[#00001352] z-40 `}
+        onClick={() => setShowPopUp(!showPopUp)}
+      >
+        <PopUp />
+      </div>
     </>
   );
 };
