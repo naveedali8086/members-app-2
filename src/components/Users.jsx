@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Spinner from "../Assets/Loader";
-import Tablerow from "../Assets/TableRow";
-import PopUp from "../Assets/Popup";
+import Spinner from "./Loader";
+import Tablerow from "./TableRow";
+import PopUp from "./Popup";
 import {
   Paper,
   Table,
@@ -17,7 +17,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { BASE_URL } from "../utils/BaseUrl";
+import { BASE_URL } from "../utils/Constants";
 const Users = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
