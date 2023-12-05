@@ -5,7 +5,7 @@ const Tablerow = ({row , index}) => {
   return (
     <>
       <TableCell align="inherit">{index + 1}</TableCell>
-      <TableCell style={{ color: "blue", cursor: "pointer" }} align="">
+      <TableCell style={{ color: "blue", cursor: "pointer" }}>
         {row.username}
       </TableCell >
       <TableCell align="inherit" >{row.name}</TableCell>
