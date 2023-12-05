@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "../Assets/Loader";
-import Tablerow from "../Assets/TableRow";
-import PopUp from "../Assets/Popup";
+import React, {useEffect, useState} from "react";
+import Spinner from "./Loader";
+import Tablerow from "./TableRow";
+import PopUp from "./Popup";
 import {
+  Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -11,13 +13,12 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Button,
-  Box,
   TextField,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { BASE_URL } from "../utils/BaseUrl";
+import {axiosInstance} from "../utils/Constants";
+
 const Users = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -28,34 +29,20 @@ const Users = () => {
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
   const [showPopUp, setShowPopUp] = useState(false);
-  const API_KEY =
-    "Wu5OJfZWu5OJfZe8OPbJRcDfbT7ZDQQquojRj1zHrkWkVonVQRhD3kpAs6ILGV8R0ROAn1exsHameKvmqOp3qjte8OPbJRcDfbT7ZDQQquojRj1zHrkWkVonVQRhD3kpAs6ILGV8R0ROAn1exsHameKvmqOp3qjt";
-
-  const GET_USERS_LIST = async () => {
+  const getUsers = async () => {
     setIsloading(true);
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `key ${API_KEY}`,
-        },
-      };
-      const res = await BASE_URL.get("/users");
-      if (res.status !== 200) {
-        throw new Error(`Could not get users. Status: ${res.status}`);
-      }
+      const res = await axiosInstance.get("/get-accounts");
       setUserList(res.data);
       setIsloading(false);
     } catch (err) {
       setError(err.message);
       setIsloading(false);
       console.error(err);
-    } finally {
-      setIsloading(false);
     }
   };
   useEffect(() => {
-    GET_USERS_LIST();
+    getUsers();
   }, []);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

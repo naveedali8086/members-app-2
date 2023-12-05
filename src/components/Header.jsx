@@ -42,7 +42,7 @@ const Header = () => {
             {isAuthenticated ? (
               <Button onClick={logout}>LOGOUT</Button>
             ) : (
-              <Button onClick={handleAccount}>ACCOUNT</Button>
+              <Button onClick={handleAccount}>LOGIN</Button>
             )}
           </ButtonGroup>
         </Stack>
