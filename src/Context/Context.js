@@ -65,7 +65,7 @@ const AccountContextProvider = ({ children }) => {
       user.signOut();
       setIsAuthenticated(false);
       setIsLogin(false)
-      navigate('/account')
+      navigate('/')
     } else {
       console.log('Logging out failed, please try again')
     }
