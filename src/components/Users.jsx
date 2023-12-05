@@ -32,7 +32,7 @@ const Users = () => {
   const getUsers = async () => {
     setIsloading(true);
     try {
-      const res = await axiosInstance.get("/users");
+      const res = await axiosInstance.get("/get-accounts");
       setUserList(res.data);
       setIsloading(false);
     } catch (err) {
