@@ -141,17 +141,17 @@ const Users = () => {
                   <TableBody>
                     {userList?.length > 0
                       ? userList
-                          .slice(
-                            page * rowsPerPage,
-                            page * rowsPerPage + rowsPerPage
-                          )
-                          .map((row, i) => {
-                            return (
-                              <TableRow hover key={row.id}>
-                                <Tablerow row={row} index={i} />
-                              </TableRow>
-                            );
-                          })
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                        .map((row, i) => {
+                          return (
+                            <TableRow hover key={row.id}>
+                              <Tablerow row={row} index={i} />
+                            </TableRow>
+                          );
+                        })
                       : null}
                   </TableBody>
                 </Table>
@@ -170,9 +170,8 @@ const Users = () => {
         )}
       </main>
       <div
-        className={` ${
-          showPopUp ? "block" : "hidden"
-        } top-10 fixed w-[100%] h-[100%] bg-[#00001352] z-40 `}
+        className={` ${showPopUp ? "block" : "hidden"
+          } top-10 fixed w-[100%] h-[100%] bg-[#00001352] z-40 `}
         onClick={() => setShowPopUp(!showPopUp)}
       >
         <PopUp />
