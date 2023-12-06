@@ -5,14 +5,16 @@ import Users from "./components/Users";
 import ForgotPassword from "./components/ForgotPassward";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
-export function NonAuthenticatedRoutes() {
-  return (
-    <Routes>
-      <Route index element={<Account />} />
-      <Route path="forgot-password" element={<ForgotPassword />} />
-    </Routes>
-  );
-}
+import Userdetail from "./components/Userdetail";
+
+// export function NonAuthenticatedRoutes() {
+//   return (
+//     <Routes>
+//       <Route index element={<Account />} />
+//       <Route path="forgot-password" element={<ForgotPassword />} />
+//     </Routes>
+//   );
+// }
 
 function App() {
   const { isAuthenticated } = Usecontext();
@@ -22,15 +24,20 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/users" element={
-            isAuthenticated ? <Users /> : <Navigate to="/account" />
-        } />
-        <Route
+        {/* <Route
           path="/account/*"
           element={
-            isAuthenticated ? <Navigate to="/users" /> : <NonAuthenticatedRoutes />
+            isAuthenticated ? (
+              <Navigate to="/users" />
+            ) : (
+              <NonAuthenticatedRoutes />
+            )
           }
-        />
+        /> */}
+        <Route path="/account" element={<Account />}/>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/detail/:memberid" element={<Userdetail />} />
       </Routes>
     </main>
   );

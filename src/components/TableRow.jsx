@@ -1,17 +1,19 @@
 import React from "react";
 import { memo } from "react";
-import { TableCell } from "@mui/material";
+import { TableCell, Checkbox } from "@mui/material";
 const Tablerow = ({ row, index }) => {
+  console.log(row);
   return (
     <>
-      <TableCell align="inherit">{index + 1}</TableCell>
-      <TableCell style={{ color: "blue", cursor: "pointer" }}>
-        {row.username}
+      <TableCell align="inherit">
+        <Checkbox />
       </TableCell>
-      <TableCell align="inherit">{row.name}</TableCell>
-      <TableCell align="inherit">{row.email}</TableCell>
-      <TableCell align="inherit">{row.phone}</TableCell>
-      <TableCell align="inherit">{row.website}</TableCell>
+      <TableCell width="20px" align="inherit"><img src={row.picture["S"]} alt="" /> </TableCell>
+      <TableCell style={{ color: "blue", cursor: "pointer" }}> </TableCell>
+      <TableCell align="inherit"> </TableCell>
+      <TableCell align="inherit"> </TableCell>
+      <TableCell align="inherit"> </TableCell>
+      <TableCell align="inherit"> </TableCell>
     </>
   );
 };

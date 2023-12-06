@@ -1,11 +1,12 @@
 import React from "react";
 import { ImCross } from "react-icons/im";
 
-const PopUp = () => {
+const PopUp = ({setShowPopUp , showPopUp}) => {
   return (
     <main id="content" role="main" className="w-full max-w-md mx-auto p-6 ">
       <div className="mt-7 bg-white  rounded-xl shadow-lg ">
-        <div className="p-4 ">
+        <div className="flex justify-end p-4"><ImCross className="cursor-pointer hover:text-blue-500"  onClick={() => setShowPopUp(!showPopUp)}/></div>
+        <div className="px-4 pb-4 ">
           <div className="text-center">
             <h1 className="block text-2xl font-bold text-gray-800  underline">
               Add New Member

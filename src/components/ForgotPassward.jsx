@@ -5,9 +5,15 @@ import Pool from "../UserPool";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { RiLoader4Line } from "react-icons/ri";
-
+import {Usecontext} from "../Context/Context"
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = Usecontext();
+ useEffect(() => {
+  if(isAuthenticated){
+    navigate('/users')
+  }
+ },[isAuthenticated])
   const [showPassword, setShowPassword] = useState(false);
   const [stage, setStage] = useState(1);
   const [email, setEmail] = useState("");

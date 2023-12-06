@@ -14,8 +14,6 @@ const Login = ({ goToSection }) => {
     email: "",
     password: "",
   });
-
-
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -97,7 +95,7 @@ const Login = ({ goToSection }) => {
                 className=""
                 type="button"
                 onClick={() => {
-                  navigate("/account/forgot-password");
+                  navigate("/forgot-password");
                 }}
             >
               Forgot Password?

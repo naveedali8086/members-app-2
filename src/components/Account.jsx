@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState , useEffect  } from "react";
 import Signup from "./Signup";
 import Login from "./Login";
-
+import {Usecontext} from "../Context/Context"
+import {useNavigate} from "react-router-dom"
 const Account = () => {
-
+  const navigate = useNavigate()
+  const { isAuthenticated } = Usecontext();
   const [section, setSection] = useState("login");
+    useEffect(() => {
+      if(isAuthenticated) {
+        navigate('/users')
+      }
+    },[isAuthenticated])
 
   const goToSection = (sectionName) => {
     setSection(sectionName);
