@@ -26,7 +26,7 @@ const Login = ({ goToSection }) => {
       const data = await authenticate(formData.email, formData.password);
       if (data) {
         console.log("on success:", data);
-        navigate("/users");
+        navigate("/members");
         setIsLoading(false);
         setFormData({ email: "", password: "" });
       }

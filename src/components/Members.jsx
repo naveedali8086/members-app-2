@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import { axiosInstance } from "../utils/Constants";
 
-const Users = () => {
+const Members = () => {
   const { isAuthenticated } = Usecontext();
   const navigate = useNavigate();
 
@@ -62,7 +62,7 @@ const Users = () => {
   };
 
   useEffect(() => {
-    const getUsers = async () => {
+    const getMembers = async () => {
       try {
         setIsloading(true);
         const res = await axiosInstance.get("/get-accounts");
@@ -75,7 +75,7 @@ const Users = () => {
         setIsloading(false);
       }
     };
-    getUsers();
+    getMembers();
   }, []);
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
@@ -92,11 +92,11 @@ const Users = () => {
       sortable: false,
       width: 50,
       renderCell: (params) => (
-        <img
-          src={params.row.picture || ""}
-          alt="User"
-          style={{ width: 40, borderRadius: "50%" }}
-        />
+          <img
+              src={params.row.picture || ""}
+              alt="User"
+              style={{ width: 40, borderRadius: "50%" }}
+          />
       ),
     },
     { field: "memberid", headerName: "No", width: 70 },
@@ -106,7 +106,7 @@ const Users = () => {
       headerName: "Name",
       width: 150,
       renderCell: (params) => (
-        <span style={{ color: "#2667ad", cursor: "pointer" }}>
+          <span style={{ color: "#2667ad", cursor: "pointer" }}>
           {params.row.name}
         </span>
       ),
@@ -126,80 +126,80 @@ const Users = () => {
     }
   };
   return (
-    <>
-      <main className="min-h-[100vh]  bg-gray-100 ">
-        <header className="bg-[#223A5E] p-2">
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "20px",
-            }}
-          >
-            <Button
-              size={buttonSize}
-              onClick={() => setShowPopUp(true)}
-              variant="contained"
-              style={{ backgroundColor: "#24FDF7", color: "#000000" }}
+      <>
+        <main className="min-h-[100vh]  bg-gray-100 ">
+          <header className="bg-[#223A5E] p-2">
+            <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "20px",
+                }}
             >
-              Add Member
-            </Button>
-            {/* <Button size={buttonSize} variant="contained">
+              <Button
+                  size={buttonSize}
+                  onClick={() => setShowPopUp(true)}
+                  variant="contained"
+                  style={{ backgroundColor: "#24FDF7", color: "#000000" }}
+              >
+                Add Member
+              </Button>
+              {/* <Button size={buttonSize} variant="contained">
               Generate
             </Button> */}
-          </Box>
-        </header>
-        {isLoading ? (
-          <span className=" h-[100vh] flex justify-center items-center">
+            </Box>
+          </header>
+          {isLoading ? (
+              <span className=" h-[100vh] flex justify-center items-center">
             <Spinner />
           </span>
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
-          <div
-            className={`
+          ) : error ? (
+              <p>{error}</p>
+          ) : (
+              <div
+                  className={`
              
              w-[100%]  p-2  `}
-          >
-            <Box pb="10px">
-              <TextField
-                name="name"
-                variant="outlined"
-                label="Search"
-                type="text"
-                color="primary"
-              />
-            </Box>
-            <Paper
-              sx={{
-                width: "100%",
-              }}
-            >
-              <DataGrid
-                rows={userList}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: { page: 0, pageSize: 10 },
-                  },
-                }}
-                pageSizeOptions={[5, 10]}
-                checkboxSelection
-                onCellClick={handleCellClick}
-              />
-            </Paper>
-          </div>
-        )}
-      </main>
-      <div
-        className={` ${
-          showPopUp ? "block" : "hidden"
-        } fixed top-0 w-[100%] h-[100%] bg-[#00001352] z-10`}
-      >
-        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} />
-      </div>
-    </>
+              >
+                <Box pb="10px">
+                  <TextField
+                      name="name"
+                      variant="outlined"
+                      label="Search"
+                      type="text"
+                      color="primary"
+                  />
+                </Box>
+                <Paper
+                    sx={{
+                      width: "100%",
+                    }}
+                >
+                  <DataGrid
+                      rows={userList}
+                      columns={columns}
+                      initialState={{
+                        pagination: {
+                          paginationModel: { page: 0, pageSize: 10 },
+                        },
+                      }}
+                      pageSizeOptions={[5, 10]}
+                      checkboxSelection
+                      onCellClick={handleCellClick}
+                  />
+                </Paper>
+              </div>
+          )}
+        </main>
+        <div
+            className={` ${
+                showPopUp ? "" : "hidden"
+            } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
+        >
+          <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} />
+        </div>
+      </>
   );
 };
 
-export default Users;
+export default Members;
