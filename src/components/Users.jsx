@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import Spinner from "./Loader";
 import PopUp from "./Popup";
 import { DataGrid } from "@mui/x-data-grid";
@@ -25,14 +25,13 @@ import { axiosInstance } from "../utils/Constants";
 
 const Users = () => {
   const { isAuthenticated } = Usecontext();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-   if(!isAuthenticated){
-       navigate("/account")
-   }
-
-  },[])
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/account");
+    }
+  }, []);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const buttonSize = isSmallScreen ? "small" : "large";
@@ -107,7 +106,9 @@ const Users = () => {
       headerName: "Name",
       width: 150,
       renderCell: (params) => (
-        <span style={{ color: "#2667ad" }}>{params.row.name}</span>
+        <span style={{ color: "#2667ad", cursor: "pointer" }}>
+          {params.row.name}
+        </span>
       ),
     },
     { field: "org", headerName: "Org.", width: 170 },
@@ -118,19 +119,17 @@ const Users = () => {
     { field: "active", headerName: "Status", width: 100 },
   ];
 
- 
   const handleCellClick = (params) => {
     if (params.field === "name") {
       const clickedRowData = params.row.memberid;
-      navigate(`/detail/${clickedRowData}`)
+      navigate(`/detail/${clickedRowData}`);
     }
   };
   return (
     <>
       <main className="min-h-[100vh]  bg-gray-100 ">
-        <header className="bg-black px-2">
+        <header className="bg-[#223A5E] p-2">
           <Box
-            p="10px 0px"
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -141,13 +140,13 @@ const Users = () => {
               size={buttonSize}
               onClick={() => setShowPopUp(true)}
               variant="contained"
-              style={{ backgroundColor: "#27FDF5", color: "#000000" }}
+              style={{ backgroundColor: "#24FDF7", color: "#000000" }}
             >
               Add Member
             </Button>
-            <Button size={buttonSize} variant="contained">
+            {/* <Button size={buttonSize} variant="contained">
               Generate
-            </Button>
+            </Button> */}
           </Box>
         </header>
         {isLoading ? (
@@ -174,7 +173,6 @@ const Users = () => {
             <Paper
               sx={{
                 width: "100%",
-                // overflowX: isSmallScreen ? "scroll" : "auto",
               }}
             >
               <DataGrid
@@ -189,59 +187,6 @@ const Users = () => {
                 checkboxSelection
                 onCellClick={handleCellClick}
               />
-              {/* <TableContainer sx={{ maxHeight: "auto", minWidth: "768px" }}>
-                <Table stickyHeader aria-label="sticky table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="inherit" colSpan={1}>
-                        Sr
-                      </TableCell>
-                      <TableCell align="inherit" colSpan={1}>
-                        User Name
-                      </TableCell>
-                      <TableCell align="inherit" colSpan={1}>
-                        Name
-                      </TableCell>
-                      <TableCell align="inherit" colSpan={1}>
-                        Email
-                      </TableCell>
-                      <TableCell align="inherit" colSpan={1}>
-                        Phone
-                      </TableCell>
-                      <TableCell align="inherit" colSpan={1}>
-                        Website
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {userList?.length > 0
-                      ? userList
-                        .slice(
-                          page * rowsPerPage,
-                          page * rowsPerPage + rowsPerPage
-                        )
-                        .map((row, i) => {
-                          // console.log(row)
-                          return (
-                           
-                            <TableRow hover key={row.memberid.S}>
-                              <Tablerow row={row} index={i} />
-                            </TableRow>
-                          );
-                        })
-                      : null}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 20, 25]}
-                component="div"
-                count={userList?.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              /> */}
             </Paper>
           </div>
         )}
@@ -249,8 +194,7 @@ const Users = () => {
       <div
         className={` ${
           showPopUp ? "block" : "hidden"
-        } top-10 fixed w-[100%] h-[100%] bg-[#00001352] z-40 `}
-       
+        } fixed top-0 w-[100%] h-[100%] bg-[#00001352] z-10`}
       >
         <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} />
       </div>
