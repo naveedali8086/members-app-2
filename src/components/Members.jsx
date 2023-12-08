@@ -35,8 +35,6 @@ const Members = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const buttonSize = isSmallScreen ? "small" : "large";
-  // const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(5);
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
@@ -120,6 +118,21 @@ const Members = () => {
       navigate(`/detail/${clickedRowData}`);
     }
   };
+  const handleSearch = (e) => {
+    const searchInput = e.target.value.toLowerCase();
+    let TimeOut;
+
+    const Search = () => {
+      const results = userList.filter(obj =>
+        obj.name.split(" ").join().toLowerCase().includes(searchInput)
+      );
+      setUserList(results);
+    };
+  
+    clearTimeout(TimeOut);
+     TimeOut = setTimeout(() => Search(), 500);
+  };
+  
   return (
     <>
       <main className="min-h-[100vh]  bg-gray-100 ">
@@ -139,9 +152,7 @@ const Members = () => {
             >
               Add Member
             </Button>
-            {/* <Button size={buttonSize} variant="contained">
-              Generate
-            </Button> */}
+
           </Box>
         </header>
         {isLoading ? (
@@ -163,6 +174,7 @@ const Members = () => {
                 label="Search"
                 type="text"
                 color="primary"
+                onChange={handleSearch}
               />
             </Box>
             <Paper
@@ -190,7 +202,7 @@ const Members = () => {
         className={` ${showPopUp ? "" : "hidden"
           } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
       >
-        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers}  />
+        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} />
       </div>
     </>
   );
