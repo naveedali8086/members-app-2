@@ -6,7 +6,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { RiLoader4Line } from "react-icons/ri";
 import {Usecontext} from "../Context/Context"
-const ForgotPassword = () => {
+const Forgotpassword = () => {
     const navigate = useNavigate();
     const { isAuthenticated } = Usecontext();
     useEffect(() => {
@@ -189,4 +189,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default Forgotpassword;

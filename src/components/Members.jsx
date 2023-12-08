@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Loader";
 import PopUp from "./Popup";
@@ -60,31 +60,26 @@ const Members = () => {
     }
     return sorrtedArry;
   };
+  const getMembers = useCallback(async () => {
+    try {
+      setIsloading(true);
+      const res = await axiosInstance.get("/get-accounts");
+      const sort = await Sorting(res.data.Items);
+      setUserList(sort);
+    } catch (err) {
+      setError(err.message);
+      console.error(err);
+    } finally {
+      setIsloading(false);
+    }
+  }, [])
 
   useEffect(() => {
-    const getMembers = async () => {
-      try {
-        setIsloading(true);
-        const res = await axiosInstance.get("/get-accounts");
-        const sort = await Sorting(res.data.Items);
-        setUserList(sort);
-      } catch (err) {
-        setError(err.message);
-        console.error(err);
-      } finally {
-        setIsloading(false);
-      }
-    };
+
     getMembers();
+
   }, []);
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-  // const handleChangeRowsPerPage = (event) => {
-  //   const newRowsPerPage = parseInt(event.target.value, 10);
-  //   setRowsPerPage(newRowsPerPage);
-  //   setPage(0);
-  // };
+
   const columns = [
     {
       field: "picture",
@@ -92,21 +87,21 @@ const Members = () => {
       sortable: false,
       width: 50,
       renderCell: (params) => (
-          <img
-              src={params.row.picture || ""}
-              alt="User"
-              style={{ width: 40, borderRadius: "50%" }}
-          />
+        <img
+          src={params.row.picture || ""}
+          alt="User"
+          style={{ width: 40, borderRadius: "50%" }}
+        />
       ),
     },
-    { field: "memberid", headerName: "No", width: 70 },
-    { field: "date_joined", headerName: "Date Joined", width: 150 },
+    { field: "memberid", headerName: "No", width: 130 },
+    { field: "date_joined", headerName: "Date Joined", width: 130 },
     {
       field: "name",
       headerName: "Name",
       width: 150,
       renderCell: (params) => (
-          <span style={{ color: "#2667ad", cursor: "pointer" }}>
+        <span style={{ color: "#2667ad", cursor: "pointer" }}>
           {params.row.name}
         </span>
       ),
@@ -115,8 +110,8 @@ const Members = () => {
     { field: "address", headerName: "Location", width: 170 },
     { field: "member_type", headerName: "Type", width: 130 },
     { field: "wol_value", headerName: "Woil Value", width: 130 },
-    { field: " ", headerName: "Expiry", width: 150 },
-    { field: "active", headerName: "Status", width: 100 },
+    { field: "expiry", headerName: "Expiry", width: 130 },
+    { field: "status", headerName: "Status", width: 130 },
   ];
 
   const handleCellClick = (params) => {
@@ -126,79 +121,78 @@ const Members = () => {
     }
   };
   return (
-      <>
-        <main className="min-h-[100vh]  bg-gray-100 ">
-          <header className="bg-[#223A5E] p-2">
-            <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: "20px",
-                }}
+    <>
+      <main className="min-h-[100vh]  bg-gray-100 ">
+        <header className="bg-[#223A5E] p-2">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "20px",
+            }}
+          >
+            <Button
+              size={buttonSize}
+              onClick={() => setShowPopUp(true)}
+              variant="contained"
+              style={{ backgroundColor: "#24FDF7", color: "#000000" }}
             >
-              <Button
-                  size={buttonSize}
-                  onClick={() => setShowPopUp(true)}
-                  variant="contained"
-                  style={{ backgroundColor: "#24FDF7", color: "#000000" }}
-              >
-                Add Member
-              </Button>
-              {/* <Button size={buttonSize} variant="contained">
+              Add Member
+            </Button>
+            {/* <Button size={buttonSize} variant="contained">
               Generate
             </Button> */}
-            </Box>
-          </header>
-          {isLoading ? (
-              <span className=" h-[100vh] flex justify-center items-center">
+          </Box>
+        </header>
+        {isLoading ? (
+          <span className=" h-[100vh] flex justify-center items-center">
             <Spinner />
           </span>
-          ) : error ? (
-              <p>{error}</p>
-          ) : (
-              <div
-                  className={`
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div
+            className={`
              
              w-[100%]  p-2  `}
-              >
-                <Box pb="10px">
-                  <TextField
-                      name="name"
-                      variant="outlined"
-                      label="Search"
-                      type="text"
-                      color="primary"
-                  />
-                </Box>
-                <Paper
-                    sx={{
-                      width: "100%",
-                    }}
-                >
-                  <DataGrid
-                      rows={userList}
-                      columns={columns}
-                      initialState={{
-                        pagination: {
-                          paginationModel: { page: 0, pageSize: 10 },
-                        },
-                      }}
-                      pageSizeOptions={[5, 10]}
-                      checkboxSelection
-                      onCellClick={handleCellClick}
-                  />
-                </Paper>
-              </div>
-          )}
-        </main>
-        <div
-            className={` ${
-                showPopUp ? "" : "hidden"
-            } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
-        >
-          <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} />
-        </div>
-      </>
+          >
+            <Box pb="10px">
+              <TextField
+                name="name"
+                variant="outlined"
+                label="Search"
+                type="text"
+                color="primary"
+              />
+            </Box>
+            <Paper
+              sx={{
+                width: "100%",
+              }}
+            >
+              <DataGrid
+                rows={userList}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+                onCellClick={handleCellClick}
+              />
+            </Paper>
+          </div>
+        )}
+      </main>
+      <div
+        className={` ${showPopUp ? "" : "hidden"
+          } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
+      >
+        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers}  />
+      </div>
+    </>
   );
 };
 

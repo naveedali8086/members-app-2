@@ -1,3 +1,20 @@
+// {
+//   Name: "name",
+//   Value: formData.name,
+// },
+// {
+//   Name: "email",
+//   Value: formData.email,
+// },
+// {
+//   Name: "phone_number",
+//   Value: formData.phone, 
+// },
+// {
+//   Name: "custom:organization",
+//   Value: formData.organisation,
+// },
+
 import React, { useEffect, useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -26,21 +43,22 @@ const Signup = ({ goToSection }) => {
         formData.password,
         [
           {
-            Name: "name",
-            Value: formData.name,
-          },
-          {
-            Name: "email",
-            Value: formData.email,
-          },
-          {
-            Name: "phone_number", // This is the attribute name for the phone number
-            Value: formData.phone, // Use the phone number from your form data
-          },
-          {
-            Name: "custom:organisation",
-            Value: formData.organisation,
-          },
+              Name: "name",
+              Value: formData.name,
+            },
+            {
+              Name: "email",
+              Value: formData.email,
+            },
+            {
+              Name: "phone_number",
+              Value: formData.phone, 
+            },
+            {
+              Name: "custom:organisation",
+              Value: formData.organisation,
+            },
+            
         ],
         null,
         (err, data) => {
