@@ -25,7 +25,7 @@ const Login = ({ goToSection }) => {
       setIsLoading(true);
       const data = await authenticate(formData.email, formData.password);
       if (data) {
-        // console.log("on success:", data);
+        console.log("on success:", data);
         navigate("/members");
         setIsLoading(false);
         setFormData({ email: "", password: "" });

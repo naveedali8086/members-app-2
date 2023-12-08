@@ -8,18 +8,20 @@
 // },
 // {
 //   Name: "phone_number",
-//   Value: formData.phone, 
+//   Value: formData.phone,
 // },
 // {
 //   Name: "custom:organization",
 //   Value: formData.organisation,
 // },
 
-import React, { useEffect, useState } from "react";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { FaRegEyeSlash } from "react-icons/fa";
+import React, {useEffect, useState} from "react";
+import {MdOutlineRemoveRedEye} from "react-icons/md";
+import {FaRegEyeSlash} from "react-icons/fa";
 import UserPool from "../UserPool";
-import { RiLoader4Line } from "react-icons/ri";
+import {RiLoader4Line} from "react-icons/ri";
+import {isNumber} from "@mui/x-data-grid/internals";
+
 const Signup = ({ goToSection }) => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -43,22 +45,22 @@ const Signup = ({ goToSection }) => {
         formData.password,
         [
           {
-              Name: "name",
-              Value: formData.name,
-            },
-            {
-              Name: "email",
-              Value: formData.email,
-            },
-            {
-              Name: "phone_number",
-              Value: formData.phone, 
-            },
-            {
-              Name: "custom:organisation",
-              Value: formData.organisation,
-            },
-            
+            Name: "name",
+            Value: formData.name,
+          },
+          {
+            Name: "email",
+            Value: formData.email,
+          },
+          {
+            Name: "phone_number",
+            Value: formData.phone,
+          },
+          {
+            Name: "custom:organisation",
+            Value: formData.organisation,
+          },
+
         ],
         null,
         (err, data) => {
@@ -109,6 +111,16 @@ const Signup = ({ goToSection }) => {
     }
     if (formData.password !== formData.confirmPassword) {
       message.passwordNotMatch = "Password is not match";
+    }
+
+    if (formData.phone) {
+      if (!formData.phone.startsWith("04")) {
+        message.phoneErr = 'Phone number must start with 04';
+      } else if (isNaN(formData.phone)) {
+        message.phoneErr = 'Phone number is not a valid';
+      } else if (formData.phone.length != 10) {
+        message.phoneErr = 'phone number must have 10 digits'
+      }
     }
     if (Object.keys(message).length > 0) {
       setMessage(message);
@@ -168,6 +180,7 @@ const Signup = ({ goToSection }) => {
               className="block my-2 w-[100%] outline-none border-2 border-gray-300 rounded-sm p-2"
               placeholder="Enter Your Phone Number"
           />
+          <p className="text-xs text-red-500 mb-2">{message?.phoneErr}</p>
           <div className=''>
             <label htmlFor="organisation" className="font-semibold">
               Organisation
