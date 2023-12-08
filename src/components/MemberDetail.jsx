@@ -2,9 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../utils/Constants";
 import { Usecontext } from "../Context/Context";
-import { Button, useMediaQuery, useTheme } from "@mui/material";
+import {Button, ButtonGroup, Menu, MenuItem, Stack, useMediaQuery, useTheme} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Spinner from "./Loader";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const MemberDetail = () => {
   const { isAuthenticated } = Usecontext();
@@ -14,6 +16,9 @@ const MemberDetail = () => {
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
   const { memberid } = useParams();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedMenuItem, setSelectedMenuItem] = useState("Last 3 Months")
+  const open = Boolean(anchorEl);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const buttonSize = isSmallScreen ? "small" : "large";
@@ -50,7 +55,18 @@ const MemberDetail = () => {
     getMembers();
   }, [isAuthenticated, memberid , navigate]);
 
-  
+  const getMemberStats = () => {
+
+  }
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
       <main className="min-h-[100vh]  bg-gray-100">
         <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
@@ -74,7 +90,7 @@ const MemberDetail = () => {
         ) : (
             <div className="overflow-x-scroll mt-8">
               <div className="grid grid-cols-4 min-w-[60rem] gap-4 sm:gap-8 px-2">
-                <aside className="border-2 border-[#BCC7CC] bg-white   ">
+                <aside className="border-4 border-[#BCC7CC] bg-white rounded ">
                   <header className="bg-[#162235] p-4 text-lg font-bold text-white">
                     Person
                   </header>
@@ -88,7 +104,7 @@ const MemberDetail = () => {
                         value={user?.name?.S}
                         readOnly
                     />
-                  
+
                     <p className="font-bold">Organization</p>
                     <input
                         className="w-[100%] block border-none outline-none  text-xs sm:text-base"
@@ -138,12 +154,81 @@ const MemberDetail = () => {
                         value={user?.address?.S}
                         style={{ resize: "none" }}
                     ></textarea>
-                    
+
                   </div>
                 </aside>
-                <article className="border-2  border-[#BCC7CC] col-span-3 bg-white">
+                <article className="border-4  border-[#BCC7CC] col-span-3 rounded bg-white">
                   <header className="p-4 text-lg font-bold border-b-2 border-[#BCC7CC] bg-gray-100 ">
-                    Workout Quotes
+                    <div className='flex justify-between'>
+                      <div>
+                        Workout History
+                      </div>
+                      <div>
+                        <Stack>
+                          <ButtonGroup
+                              variant="outlined"
+                              size={buttonSize}
+                              orientation="horizontal"
+                              color="info"
+                              aria-label="alignment group button"
+                          >
+                            <div>
+                              <Button
+                                  id="basic-button"
+                                  aria-controls={open ? "basic-menu" : undefined}
+                                  aria-haspopup="true"
+                                  aria-expanded={open ? "true" : undefined}
+                                  onClick={handleClick}
+                                  endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                              >
+                                {selectedMenuItem}
+                              </Button>
+                              <Menu
+                                  id="basic-menu"
+                                  anchorEl={anchorEl}
+                                  open={open}
+                                  onClose={handleClose}
+                                  MenuListProps={{
+                                    "aria-labelledby": "basic-button",
+                                  }}
+                              >
+
+                                <MenuItem
+                                    onClick={() => {
+                                      handleClose();
+                                      setSelectedMenuItem("Past 3 Months");
+                                      getMemberStats()
+                                    }}
+                                >
+                                  Past 3 Months
+                                </MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                      handleClose();
+                                      setSelectedMenuItem("Past 1 Year");
+                                      getMemberStats()
+                                    }}
+                                >
+                                  Past 1 Year
+                                </MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                      handleClose();
+                                      setSelectedMenuItem("Past 2 Year");
+                                      getMemberStats()
+                                    }}
+                                >
+                                  Past 2 Year
+                                </MenuItem>
+                              </Menu>
+                            </div>
+
+                          </ButtonGroup>
+                        </Stack>
+                      </div>
+                    </div>
                   </header>
                 </article>
               </div>
