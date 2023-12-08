@@ -79,19 +79,19 @@ const PopUp = ({ setShowPopUp, showPopUp, getmembers }) => {
     if (error) {
       setError("");
     }
-  }, [user]);
+  }, [user , showPopUp]);
   return (
     <>
 
 
-      <main id="content" role="main" className="mx-auto mt-[2rem] sm:mt-[6rem] w-[100%]   max-w-[40rem]  ">
+      <main id="content" role="main" className="mx-auto   rounded-md   max-h-[50vh] shadow-sm shadow-white		 overflow-auto  mt-[2rem] sm:mt-[6rem] w-[100%]   max-w-[40rem]  ">
         {
           isLoading && <span className=" h-[100vh] flex justify-center items-center">
             <Spinner />
           </span>
         }
 
-        <div className=" bg-white rounded-xl shadow-lg ">
+        <div className=" bg-white  shadow-lg ">
           <p
             className={`text-red-600 p-2 ${error ? "" : "hidden"
               }`}
@@ -112,10 +112,10 @@ const PopUp = ({ setShowPopUp, showPopUp, getmembers }) => {
               />
             </div>
           </div>
-          <div className="px-4 pb-4 ">
+          <div className=" px-2 sm:px-4 pb-4 ">
             <div className="mt-5">
               <form action="" onSubmit={handleSubmit}>
-                <div className="grid  sm:grid-cols-2 sm:gap-4 ">
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 ">
                   <div>
                     <label
                       htmlFor=" firstName"
@@ -143,6 +143,7 @@ const PopUp = ({ setShowPopUp, showPopUp, getmembers }) => {
                       {message.requireFirstName}
                     </p>
                   </div>
+                 
 
                   <div>
                     <label
@@ -173,60 +174,65 @@ const PopUp = ({ setShowPopUp, showPopUp, getmembers }) => {
                   </div>
 
 
+                  {/* <div className="col-span-2 flex gap-4"> */}
+                    <div className="flex-1">
+                      <label
+                        htmlFor="joined_at"
+                        className="block text-sm font-bold ml-1 sm:mb-2 "
+                      >
+                        Joined Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="date"
+                          id="joined_at"
+                          name="joined_at"
+                          className={` ${user.joined_at ? "text-black" : "text-[#a9a9a9]"} py-2 sm:py-3 px-4  block w-full outline-none border-2 border-blue-200 rounded-md text-sm  shadow-sm`}
+                          aria-describedby="joined_at-error"
+                          value={user.joined_at}
+                          onChange={onchange}
+                          placeholder="Date"
+                        />
+                      </div>
+                      <p
+                        className={`text-xs text-red-600 mt-2 ${message.requireJoined_At ? "" : "hidden"
+                          }`}
+                        id="joined_at-error"
+                      >
+                        {message.requireJoined_At}
+                      </p>
+                    </div>
 
-                  <div className="">
-                    <label
-                      htmlFor="joined_at"
-                      className="block text-sm font-bold ml-1 sm:mb-2 "
-                    >
-                      Joined Date
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="date"
-                        id="joined_at"
-                        name="joined_at"
-                        className={` ${user.joined_at ? "text-black" : "text-[#a9a9a9]"} py-2 sm:py-3 px-4  block w-full outline-none border-2 border-blue-200 rounded-md text-sm  shadow-sm`}
-                        aria-describedby="joined_at-error"
-                        value={user.joined_at}
-                        onChange={onchange}
-                        placeholder="Date"
-                      />
+                    <div className="flex-1">
+                      <label
+                        htmlFor="expired_at"
+                        className="block text-sm font-bold ml-1 sm:mb-2 "
+                      >
+                        Expiry Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="date"
+                          id="expired_at"
+                          name="expired_at"
+                          className={` ${user.expired_at ? "text-black" : "text-[#a9a9a9]"} py-2 sm:py-3 px-4  block w-full outline-none border-2 border-blue-200 rounded-md text-sm  shadow-sm`}
+                          aria-describedby="expired_at-error"
+                          value={user.expired_at}
+                          onChange={onchange}
+                        />
+                      </div>
+                      <p
+                        className={`text-xs text-red-600 mt-2 ${message.requireExpired_At ? "" : "hidden"
+                          }`}
+                        id="expired_at-error"
+                      >
+                        {message.requireExpired_At}
+                      </p>
                     </div>
-                    <p
-                      className={`text-xs text-red-600 mt-2 ${message.requireJoined_At ? "" : "hidden"
-                        }`}
-                      id="joined_at-error"
-                    >
-                      {message.requireJoined_At}
-                    </p>
-                  </div>
-                  <div className="flex-1">
-                    <label
-                      htmlFor="expired_at"
-                      className="block text-sm font-bold ml-1 sm:mb-2 "
-                    >
-                      Expiry Date
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="date"
-                        id="expired_at"
-                        name="expired_at"
-                        className={` ${user.expired_at ? "text-black" : "text-[#a9a9a9]"} py-2 sm:py-3 px-4  block w-full outline-none border-2 border-blue-200 rounded-md text-sm  shadow-sm`}
-                        aria-describedby="expired_at-error"
-                        value={user.expired_at}
-                        onChange={onchange}
-                      />
-                    </div>
-                    <p
-                      className={`text-xs text-red-600 mt-2 ${message.requireExpired_At ? "" : "hidden"
-                        }`}
-                      id="expired_at-error"
-                    >
-                      {message.requireExpired_At}
-                    </p>
-                  </div>
+                  {/* </div> */}
+
+
+
 
                   <div className="">
                     <div className="">
@@ -308,7 +314,7 @@ const PopUp = ({ setShowPopUp, showPopUp, getmembers }) => {
                     </p>
                   </div>
 
-                  <div className="sm:col-span-2">
+                  <div className="col-span-2">
                     <label
                       htmlFor="address"
                       className="block text-sm font-bold ml-1 sm:mb-2 "

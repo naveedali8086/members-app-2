@@ -22,6 +22,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { axiosInstance } from "../utils/Constants";
+import { myMY } from "@mui/material/locale";
 
 const Members = () => {
   const { isAuthenticated } = Usecontext();
@@ -36,6 +37,7 @@ const Members = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const buttonSize = isSmallScreen ? "small" : "large";
   const [userList, setUserList] = useState([]);
+  const [originalUserList, setOriginalUserList] = useState([])
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
   const [showPopUp, setShowPopUp] = useState(false);
@@ -77,7 +79,11 @@ const Members = () => {
     getMembers();
 
   }, []);
+  useEffect(() => {
 
+    setOriginalUserList(userList)
+
+  }, [userList])
   const columns = [
     {
       field: "picture",
@@ -118,21 +124,20 @@ const Members = () => {
       navigate(`/detail/${clickedRowData}`);
     }
   };
+
   const handleSearch = (e) => {
     const searchInput = e.target.value.toLowerCase();
-    let TimeOut;
-
-    const Search = () => {
+    let timeoutId;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
       const results = userList.filter(obj =>
-        obj.name.split(" ").join().toLowerCase().includes(searchInput)
+        obj.name.split(" ").join('').toLowerCase().includes(searchInput)
       );
-      setUserList(results);
-    };
-  
-    clearTimeout(TimeOut);
-     TimeOut = setTimeout(() => Search(), 500);
-  };
-  
+      console.log("results", results);
+      setOriginalUserList(results);
+    }, 500);
+
+  }
   return (
     <>
       <main className="min-h-[100vh]  bg-gray-100 ">
@@ -183,7 +188,7 @@ const Members = () => {
               }}
             >
               <DataGrid
-                rows={userList}
+                rows={originalUserList}
                 columns={columns}
                 initialState={{
                   pagination: {
