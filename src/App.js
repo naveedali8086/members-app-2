@@ -9,6 +9,7 @@ const ForgotPassword = lazy(() => import("./components/ForgotPassward"));
 const Members = lazy(() => import("./components/Members"));
 const MemberDetail = lazy(() => import("./components/MemberDetail"));
 const NotFound = lazy(() => import("./components/404"));
+const Graphs = lazy(() => import("./components/Graph"))
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/members" element={<Members />} />
           <Route path="/detail/:memberid" element={<MemberDetail />} />
+          <Route path="/graph/:memberid" element={<Graphs/>} />
           <Route path={`*`} element={<NotFound/>}/>
         </Routes>
       </Suspense>
