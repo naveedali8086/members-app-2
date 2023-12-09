@@ -20,7 +20,6 @@ import {MdOutlineRemoveRedEye} from "react-icons/md";
 import {FaRegEyeSlash} from "react-icons/fa";
 import UserPool from "../UserPool";
 import {RiLoader4Line} from "react-icons/ri";
-import {isNumber} from "@mui/x-data-grid/internals";
 
 const Signup = ({ goToSection }) => {
   const [error, setError] = useState("");
@@ -118,7 +117,7 @@ const Signup = ({ goToSection }) => {
         message.phoneErr = 'Phone number must start with 04';
       } else if (isNaN(formData.phone)) {
         message.phoneErr = 'Phone number is not a valid';
-      } else if (formData.phone.length != 10) {
+      } else if (formData.phone.length !== 10) {
         message.phoneErr = 'phone number must have 10 digits'
       }
     }
