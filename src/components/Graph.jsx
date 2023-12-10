@@ -99,6 +99,7 @@ const Graph = () => {
   const labels = ['Current Week', 'Last Week'];
   const [chartData, setChartData] = useState(data1);
   const [repsSteps, setRepsSteps] = useState([200, 300]);
+  const [trainDays , setTrainDays] = useState(0)
   const data2 = {
     labels,
     datasets: [
@@ -163,7 +164,7 @@ const Graph = () => {
     }
   }
 
-  const getTotalRepsSteps = async (startDate, endDate) => {
+  const getTotalRepsSteps = async (startDate, endDate , isCurrentWeek) => {
     const startDateFormatted = formatDateForURL(startDate);
     const endDateFormatted = formatDateForURL(endDate);
 
@@ -172,7 +173,11 @@ const Graph = () => {
       console.log(res);
       if (res.data?.Items?.length > 0) {
         const totalRepsSteps = res.data.Items.reduce((total, item) => total + item.reps_steps, 0);
+        const daysOfTraining = res.data.Items.reduce((total, item) => total + item.didtrain , 0)
         setRepsSteps((prevData) => [...prevData, totalRepsSteps]);
+        if (isCurrentWeek) {
+          setTrainDays(daysOfTraining);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -180,8 +185,8 @@ const Graph = () => {
   };
 
   const Steps = () => {
-    getTotalRepsSteps(currentWeekStartDate, currentWeekEndDate);
-    getTotalRepsSteps(lastWeekStartDate, lastWeekEndDate);
+    getTotalRepsSteps(currentWeekStartDate, currentWeekEndDate,true);
+    getTotalRepsSteps(lastWeekStartDate, lastWeekEndDate, false);
   }
 
 
@@ -216,10 +221,8 @@ const Graph = () => {
         </Button>
       </header>
       <div className='flex flex-col sm:flex-row  justify-end items-center p-2'>
-        <div className='pb-2 sm:pb-0'>
-          <DatePicker
-            className=' outline-line border-2 border-2 solid'
-            selected={startDate} onChange={(date) => setStartDate(startOfDay(date))} />
+        <div className='pb-2 flex sm:pb-0'>
+          <DatePicker className=' outline-line border-2 border-2 solid' selected={startDate} onChange={(date) => setStartDate(startOfDay(date))} />
           <DatePicker className=' outline-line border-2 border-2 solid mr-2' selected={endDate} onChange={(date) => setEndDate(endOfDay(date))} />
         </div>
 
@@ -231,13 +234,13 @@ const Graph = () => {
       </div>
 
 
-      <div className='grid grid-cols-1 grid-rows-4  sm:grid-cols-4 sm:grid-rows-3 bg-white gap-x-4 sm:px-2'>
+      <div className='grid grid-cols-1 grid-rows-4  sm:grid-cols-4 sm:grid-rows-3 bg-white  gap-x-4 sm:px-2'>
 
-        <div className='text-3xl row-span-1 border-gray-300 border-4 rounded bg-white'>
+        <div className=' row-span-1 border-gray-300 border-4 rounded bg-white flex flex-col'>
           <header className="bg-[#162235] p-2 lg:p-4 text-lg font-bold text-white">
             Person
           </header>
-          <p>100</p>
+          <p className='flex-1 text-8xl sm:text-4xl lg:text-8xl flex items-center justify-center'>{trainDays}</p>
         </div>
 
         <div className=' row-span-1  sm:col-span-3 sm:row-span-3 border-gray-300 border-4 rounded bg-white'>
@@ -248,7 +251,7 @@ const Graph = () => {
 
         </div>
 
-        <div className='mt-4 row-span-2  border-gray-300 border-4 rounded bg-white'>
+        <div className='sm:mt-4 row-span-2  border-gray-300 border-4 rounded bg-white'>
           <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
             Person
           </header>
