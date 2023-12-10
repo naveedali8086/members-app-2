@@ -372,7 +372,7 @@ const PopUp = ({ setShowPopUp, showPopUp, getmembers }) => {
                         {message.requireAddress}
                       </p>
                     </div>
-                    <div className={`${imageUrl ? "flex items-center ":""} col-span-2 `}>
+                    <div className={`${imageUrl ? "flex items-center":""} col-span-2 `}>
                       {imageUrl && (
                           <div className="mr-2">
                             <img src={imageUrl} alt="Uploaded" style={{ maxWidth: '50px', maxHeight: '50px' }} />
