@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { startOfDay, endOfDay, eachDayOfInterval, startOfWeek, endOfWeek, addWeeks, format } from 'date-fns';
-import DatePicker from 'react-datepicker';
+import React, { useState, useEffect } from "react";
+import {
+  startOfDay,
+  endOfDay,
+  eachDayOfInterval,
+  startOfWeek,
+  endOfWeek,
+  addWeeks,
+  format,
+} from "date-fns";
+import DatePicker from "react-datepicker";
 import { axiosInstance } from "../utils/Constants";
-import { Button, useMediaQuery, useTheme, } from "@mui/material";
+import { Button, useMediaQuery, useTheme } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 import { Usecontext } from "../Context/Context";
 
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,8 +27,8 @@ import {
   Tooltip,
   Filler,
   Legend,
-} from 'chart.js';
-import { Pie, Line } from 'react-chartjs-2';
+} from "chart.js";
+import { Pie, Line } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -38,26 +46,25 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'bottom',
-      display:"none",
+      position: "bottom",
+      display: "none",
     },
     title: {
       display: true,
-      text: 'PeakStrength',
+      text: "PeakStrength",
     },
   },
-
 };
 
 export const options2 = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'bottom',
+      position: "bottom",
     },
     title: {
       display: true,
-      text: 'Reps Steps Comparison',
+      text: "Reps Steps Comparison",
     },
   },
 };
@@ -66,49 +73,61 @@ const Graph = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const buttonSize = isSmallScreen ? "small" : "large";
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { isAuthenticated } = Usecontext();
   const { memberid } = useParams();
   const currentDate = new Date();
-  const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const startOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  );
+  const endOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  );
   const currentWeekStartDate = startOfWeek(currentDate);
   const currentWeekEndDate = endOfWeek(currentDate);
   const lastWeekStartDate = startOfWeek(addWeeks(currentDate, -1));
   const lastWeekEndDate = endOfWeek(addWeeks(currentDate, -1));
   const [startDate, setStartDate] = useState(startOfMonth);
   const [endDate, setEndDate] = useState(endOfMonth);
-  const [strength, setStrength] = useState([])
-
-  // const formattedDays = (startDate, endDate) => {
-  //   const daysInInterval = eachDayOfInterval({ start: startDate, end: endDate });
-  //   return daysInInterval.map((date) => format(date, 'MMM d'));
-  // };
-  const data1 = {
-    labels: strength.map((ele) => format(new Date(ele.date), 'MMM d')),
-    datasets: [
-      {
-        fill: true,
-        label: 'PeakStrength',
-        data: strength.map((ele) => ele.peakstrength),
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      },
-    ],
+  const [strength, setStrength] = useState([]);
+  const [chartData, setChartData] = useState({});
+  const [error, setError] = useState("");
+  const formattedDays = (startDate, endDate, data) => {
+    const daysInInterval = eachDayOfInterval({
+      start: startDate,
+      end: endDate,
+    });
+    const dataDates = data.map((ele) => new Date(ele.date));
+    const allDates = [...daysInInterval, ...dataDates];
+    const uniqueDates = Array.from(new Set(allDates));
+    return uniqueDates.map((date) => format(date, "MMM d"));
   };
-  const labels = ['Current Week', 'Last Week'];
-  const [chartData, setChartData] = useState(data1);
-  const [repsSteps, setRepsSteps] = useState([200, 300]);
-  const [trainDays , setTrainDays] = useState(0)
+  // const data1 = {
+  //   labels: strength.map((ele) => format(new Date(ele.date), 'MMM d')),
+  //   datasets: [
+  //     {
+  //       fill: true,
+  //       label: 'PeakStrength',
+  //       data: strength.map((ele) => ele.peakstrength),
+  //       borderColor: 'rgb(53, 162, 235)',
+  //       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+  //     },
+  //   ],
+  // };
+  const labels = ["Current Week", "Last Week"];
+  const [repsSteps, setRepsSteps] = useState([]);
+  const [trainDays, setTrainDays] = useState(0);
   const data2 = {
     labels,
     datasets: [
       {
         data: repsSteps,
-        backgroundColor: ['rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',],
-        borderColor: ['rgb(255, 99, 132, 1)',
-          'rgb(54, 162, 235, 1)',],
+        backgroundColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+        borderColor: ["rgb(255, 99, 132, 1)", "rgb(54, 162, 235, 1)"],
         borderWidth: 1,
       },
     ],
@@ -133,47 +152,65 @@ const Graph = () => {
     return sorrtedArry;
   };
   const formatDateForURL = (date) => {
-    return format(date, 'yyyy-MM-dd');
+    return format(date, "yyyy-MM-dd");
   };
   const getStats = async () => {
     const startDateFormatted = await formatDateForURL(startDate);
     const endDateFormatted = await formatDateForURL(endDate);
     console.log(`${startDateFormatted} ${endDateFormatted}`);
     try {
-
-      const res = await axiosInstance.get(`/my-stats/?memberid=1234&startDate=${startDateFormatted}&endDate=${endDateFormatted}`)
+      const res = await axiosInstance.get(
+        `/my-stats/?memberid=1234&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
+      );
       console.log(res);
-      const Sort = Sorting(res.data.Items)
-      setStrength(Sort)
+      const Sort = Sorting(res.data.Items);
+      setStrength(Sort);
+
       const updatedChartData = {
-        labels: Sort.map((ele) => format(new Date(ele.date), 'MMM d')),
+        labels: formattedDays && formattedDays(startDate, endDate, Sort),
         datasets: [
           {
             fill: true,
-            label: 'PeakStrength',
-            data: Sort.map((ele) => ele.peakstrength),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            label: "PeakStrength",
+            data:
+              formattedDays &&
+              formattedDays(startDate, endDate, Sort).map((formattedDate) => {
+                const matchingData = Sort.find(
+                  (ele) => format(new Date(ele.date), "MMM d") === formattedDate
+                );
+                return matchingData ? matchingData.peakstrength : null;
+              }),
+            borderColor: "rgb(53, 162, 235)",
+            backgroundColor: "rgba(53, 162, 235, 0.5)",
           },
         ],
       };
+
       setChartData(updatedChartData);
+    } catch (err) {
+      console.error(err);
+      setError(err);
     }
-    catch (err) {
+  };
 
-    }
-  }
-
-  const getTotalRepsSteps = async (startDate, endDate , isCurrentWeek) => {
+  const getTotalRepsSteps = async (startDate, endDate, isCurrentWeek) => {
     const startDateFormatted = formatDateForURL(startDate);
     const endDateFormatted = formatDateForURL(endDate);
 
     try {
-      const res = await axiosInstance.get(`/my-stats/?memberid=1234&startDate=${startDateFormatted}&endDate=${endDateFormatted}`);
+      const res = await axiosInstance.get(
+        `/my-stats/?memberid=1234&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
+      );
       console.log(res);
       if (res.data?.Items?.length > 0) {
-        const totalRepsSteps = res.data.Items.reduce((total, item) => total + item.reps_steps, 0);
-        const daysOfTraining = res.data.Items.reduce((total, item) => total + item.didtrain , 0)
+        const totalRepsSteps = res.data.Items.reduce(
+          (total, item) => total + item.reps_steps,
+          0
+        );
+        const daysOfTraining = res.data.Items.reduce(
+          (total, item) => total + item.didtrain,
+          0
+        );
         setRepsSteps((prevData) => [...prevData, totalRepsSteps]);
         if (isCurrentWeek) {
           setTrainDays(daysOfTraining);
@@ -181,33 +218,29 @@ const Graph = () => {
       }
     } catch (err) {
       console.error(err);
+      setError(err);
     }
   };
 
   const Steps = () => {
-    getTotalRepsSteps(currentWeekStartDate, currentWeekEndDate,true);
+    getTotalRepsSteps(currentWeekStartDate, currentWeekEndDate, true);
     getTotalRepsSteps(lastWeekStartDate, lastWeekEndDate, false);
-  }
-
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/account")
+      navigate("/account");
     }
-    getStats()
-    Steps()
-
-  }, [])
-
+    getStats();
+    Steps();
+  }, []);
 
   const fetchData = () => {
-    getStats()
+    getStats();
   };
-
 
   console.log(strength);
   return (
-
     <div className="min-h-[100vh]  bg-gray-100">
       <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
         <Button
@@ -220,45 +253,63 @@ const Graph = () => {
           Back To Detail
         </Button>
       </header>
-      <div className='flex flex-col sm:flex-row  justify-end items-center p-2'>
-        <div className='pb-2 flex sm:pb-0'>
-          <DatePicker className=' outline-line border-2 border-2 solid' selected={startDate} onChange={(date) => setStartDate(startOfDay(date))} />
-          <DatePicker className=' outline-line border-2 border-2 solid mr-2' selected={endDate} onChange={(date) => setEndDate(endOfDay(date))} />
+      { error ? (
+        <p>{error.message}</p>
+      ) : (
+        <div>
+          <div className="flex flex-col sm:flex-row  justify-end items-center p-2">
+            <div className="pb-2 flex sm:pb-0">
+              <DatePicker
+                className=" outline-line border-2 border-2 solid"
+                selected={startDate}
+                onChange={(date) => setStartDate(startOfDay(date))}
+              />
+              <DatePicker
+                className=" outline-line border-2 border-2 solid mr-2"
+                selected={endDate}
+                onChange={(date) => setEndDate(endOfDay(date))}
+              />
+            </div>
+
+            <Button size={buttonSize} variant="outlined" onClick={fetchData}>
+              Fetch Data
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 grid-rows-4  sm:grid-cols-4 sm:grid-rows-3 bg-white  gap-x-4 sm:px-2">
+            <div className=" row-span-1 border-gray-300 border-4 rounded bg-white flex flex-col">
+              <header className="bg-[#162235] p-2 lg:p-4 text-lg font-bold text-white">
+                Person
+              </header>
+              <p className="flex-1 text-8xl sm:text-4xl lg:text-8xl flex items-center justify-center">
+                {trainDays}
+              </p>
+            </div>
+
+            <div className=" row-span-1  sm:col-span-3 sm:row-span-3 border-gray-300 border-4 rounded bg-white">
+              <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
+                Person
+              </header>
+              {strength.length > 0 ? (
+                <Line options={options} data={chartData} />
+              ) : (
+                <p>No Data found</p>
+              )}
+            </div>
+
+            <div className="sm:mt-4 row-span-2  border-gray-300 border-4 rounded bg-white">
+              <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
+                Person
+              </header>
+              {repsSteps.length > 0 ? (
+                <Pie options={options2} data={data2} />
+              ) : (
+                <p>No Data Found</p>
+              )}
+            </div>
+          </div>
         </div>
-
-        <Button
-          size={buttonSize}
-          variant="outlined"
-          onClick={fetchData}>Fetch Data
-        </Button>
-      </div>
-
-
-      <div className='grid grid-cols-1 grid-rows-4  sm:grid-cols-4 sm:grid-rows-3 bg-white  gap-x-4 sm:px-2'>
-
-        <div className=' row-span-1 border-gray-300 border-4 rounded bg-white flex flex-col'>
-          <header className="bg-[#162235] p-2 lg:p-4 text-lg font-bold text-white">
-            Person
-          </header>
-          <p className='flex-1 text-8xl sm:text-4xl lg:text-8xl flex items-center justify-center'>{trainDays}</p>
-        </div>
-
-        <div className=' row-span-1  sm:col-span-3 sm:row-span-3 border-gray-300 border-4 rounded bg-white'>
-          <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
-            Person
-          </header>
-          <Line options={options} data={chartData} />
-
-        </div>
-
-        <div className='sm:mt-4 row-span-2  border-gray-300 border-4 rounded bg-white'>
-          <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
-            Person
-          </header>
-          <Pie options={options2} data={data2} />
-        </div>
-
-      </div>
+      )}
     </div>
   );
 };

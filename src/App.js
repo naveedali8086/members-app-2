@@ -1,6 +1,6 @@
 
-import { Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Routes, Route , useLocation } from "react-router-dom";
+import { lazy, Suspense , useEffect } from "react";
 import Header from "./components/Header";
 
 const LandingPage = lazy(() => import("./components/LandingPage"));
@@ -11,7 +11,10 @@ const MemberDetail = lazy(() => import("./components/MemberDetail"));
 const NotFound = lazy(() => import("./components/404"));
 const Graphs = lazy(() => import("./components/Graph"))
 function App() {
-
+   const {pathname} = useLocation()
+   useEffect(()=>{
+    document.title = `Insquare remotePT-${pathname}` 
+   },[pathname])
   return (
     <main className="max-w-[120rem] mx-auto bg-white">
       <Header />

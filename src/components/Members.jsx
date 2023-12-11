@@ -15,7 +15,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { axiosInstance } from "../utils/Constants";
-import { myMY } from "@mui/material/locale";
 
 const Members = () => {
   const { isAuthenticated } = Usecontext();
@@ -34,6 +33,8 @@ const Members = () => {
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
   const [showPopUp, setShowPopUp] = useState(false);
+  const [editPopUp , setEditPopUp] = useState(false);
+  const [editableMember, setEditableMember] =useState({});
   const Sorting = (array) => {
     let sorrtedArry = [];
     let obj = {};
@@ -73,8 +74,35 @@ const Members = () => {
     getMembers();
 
   }, []);
+  const handleCustomAction = (params)=>{
+    const id =  params.row.memberid
+    const editMember = userList.filter((member)=> member.id === id)
+    if(editMember.length > 0) {
+      setEditableMember(editMember[0])
+      setEditPopUp(true)
+      setShowPopUp(true)
+    }
+  }
 
   const columns = [
+    {
+      field: "actions", // Field name for the custom column
+      headerName: "Actions",
+      sortable: false,
+      width: 150,
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleCustomAction(params)}
+          >
+             Edit
+          </Button>
+        </div>
+      )
+    },
     {
       field: "picture",
       headerName: "Image",
@@ -198,7 +226,7 @@ const Members = () => {
         className={` ${showPopUp ? "" : "hidden"
           } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
       >
-        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} />
+        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} editPopUp={editPopUp} setEditPopUp={setEditPopUp} editableMember={editableMember} />
       </div>
     </>
   );

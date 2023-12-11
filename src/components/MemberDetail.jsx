@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../utils/Constants";
 import { Usecontext } from "../Context/Context";
-import { Button, Menu, MenuItem, useMediaQuery, useTheme, Paper } from "@mui/material";
+import { Button, Menu, MenuItem, useMediaQuery, useTheme, Paper, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -153,12 +153,12 @@ const MemberDetail = () => {
         <div>
           <p className="font-bold text-xl italic text-white  inline-block pr-2" >{user?.status?.S}</p>
           <Button size={buttonSize}
-           
+
             variant="contained"
             onClick={() => navigate(`/graph/${memberid}`)}
-            style={{ backgroundColor: "#ffffff", color: "#000000",display:"inline-block" }}
-            endIcon={<ArrowForwardIosIcon  style={{ color: "#24FDF7" }}/>}
-            >
+            style={{ backgroundColor: "#ffffff", color: "#000000", display: "inline-block" }}
+            endIcon={<ArrowForwardIosIcon style={{ color: "#24FDF7" }} />}
+          >
             Graph
           </Button>
 
@@ -330,17 +330,21 @@ const MemberDetail = () => {
                   width: "100%",
                 }}
               >
-                <DataGrid
-                  rows={userStats}
-                  columns={columns}
-                  initialState={{
-                    pagination: {
-                      paginationModel: { page: 0, pageSize: 10 },
-                    },
-                  }}
-                  pageSizeOptions={[5, 10]}
+                {
+                  userStats.length > 0 ? <DataGrid
+                    rows={userStats}
+                    columns={columns}
+                    initialState={{
+                      pagination: {
+                        paginationModel: { page: 0, pageSize: 10 },
+                      },
+                    }}
+                    pageSizeOptions={[5, 10]}
 
-                />
+                  /> : <Typography variant="h1" gutterBottom>No Data found</Typography>
+                }
+
+
               </Paper>
             </article>
           </div>
