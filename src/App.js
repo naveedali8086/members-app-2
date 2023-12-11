@@ -12,9 +12,12 @@ const NotFound = lazy(() => import("./components/404"));
 const Graphs = lazy(() => import("./components/Graph"))
 function App() {
    const {pathname} = useLocation()
+   const Title = pathname.split('/')[1]
+     console.log(Title);
+
    useEffect(()=>{
-    document.title = `Insquare remotePT-${pathname}` 
-   },[pathname])
+    document.title = `Insquare remotePT-${Title?Title:""}`; 
+   },[Title , pathname])
   return (
     <main className="max-w-[120rem] mx-auto bg-white">
       <Header />
