@@ -102,7 +102,7 @@ const PopUp = ({
           await getmembers();
           setUser(intialState);
           setImageUrl("");
-          return setShowPopUp(!showPopUp);
+          return ( setShowPopUp(!showPopUp) , setEditPopUp(!editPopUp) )
         }
       } catch (err) {
         console.log(err);
@@ -121,7 +121,7 @@ const PopUp = ({
     if (error) {
       setError("");
     }
-  }, [user, showPopUp]);
+  }, [user, showPopUp , editPopUp]);
 
   const imageLoader = (e) => {
     const file = e.target.files[0];
