@@ -107,7 +107,7 @@ const MemberDetail = () => {
       try {
         console.log("inside", startDate);
         const todayDate = format(new Date(), "yyyy-MM-dd")
-        const res = await axiosInstance.get(`/my-stats/?memberid=1234&startDate=${startDate}&endDate=${todayDate}`)
+        const res = await axiosInstance.get(`/my-stats/?memberid=${memberid}&startDate=${startDate}&endDate=${todayDate}`)
         // console.log(res);
         if (res.data?.Items?.length > 0) {
           const Sort = Sorting(res.data.Items)
@@ -126,7 +126,6 @@ const MemberDetail = () => {
 
   const columns = [
     { field: "date", headerName: "Date", width: 150 },
-    { field: "memberid", headerName: "No", width: 130 },
     { field: "peakstrength", headerName: "Peak Strength", width: 130 },
     { field: "reps_steps", headerName: "Reps/Steps", width: 150 },
     { field: "workout_name", headerName: "WorkOut Name", width: 170 },
@@ -139,218 +138,220 @@ const MemberDetail = () => {
     setAnchorEl(event.currentTarget);
   };
   return (
-    <main className="min-h-[100vh]  bg-gray-100">
-      <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
-        <Button
-          size={buttonSize}
-          variant="contained"
-          onClick={() => navigate("/members")}
-          style={{ backgroundColor: "#ffffff", color: "#000000" }}
-          startIcon={<ArrowBackIosIcon style={{ color: "#24FDF7" }} />}
-        >
-          Back To People
-        </Button>
-        <div>
-          <p className="font-bold text-xl italic text-white  inline-block pr-2" >{user?.status?.S}</p>
-          <Button size={buttonSize}
-
-            variant="contained"
-            onClick={() => navigate(`/graph/${memberid}`)}
-            style={{ backgroundColor: "#ffffff", color: "#000000", display: "inline-block" }}
-            endIcon={<ArrowForwardIosIcon style={{ color: "#24FDF7" }} />}
+      <main className="min-h-[100vh]  bg-gray-100">
+        <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
+          <Button
+              size={buttonSize}
+              variant="contained"
+              onClick={() => navigate("/members")}
+              style={{ backgroundColor: "#ffffff", color: "#000000" }}
+              startIcon={<ArrowBackIosIcon style={{ color: "#24FDF7" }} />}
           >
-            Graph
+            Back To People
           </Button>
+          <div>
+            <p className="font-bold text-xl italic text-white  inline-block pr-2" >{user?.status?.S}</p>
+            <Button size={buttonSize}
 
-        </div>
-      </header>
-      {isLoading ? (
-        <span className=" h-[100vh] flex justify-center items-center">
+                    variant="contained"
+                    onClick={() => navigate(`/graph/${memberid}`)}
+                    style={{ backgroundColor: "#ffffff", color: "#000000", display: "inline-block" }}
+                    endIcon={<ArrowForwardIosIcon style={{ color: "#24FDF7" }} />}
+            >
+              Graph
+            </Button>
+
+          </div>
+        </header>
+        {isLoading ? (
+            <span className=" h-[100vh] flex justify-center items-center">
           <Spinner />
         </span>
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <div className="overflow-x-hidden mt-8">
-          <div className="px-2 md:grid  md:grid-cols-4   sm:gap-8 ">
-            <aside className="border-gray-300 border-4 rounded bg-white">
-              <header className="bg-[#162235] p-4 text-lg font-bold text-white">
-                Person
-              </header>
-              <div className="p-4 grid grid-cols-2 md:grid-cols-1 gap-y-2">
-                <div>
-                  <p className="font-bold">Name</p>
-                  <input
-                    className="w-[100%] block border-none outline-none text-xs sm:text-base "
-                    type="text"
-                    name=""
-                    id=""
-                    value={user?.name?.S}
-                    readOnly
-                  />
-                </div>
+        ) : error ? (
+            <p>{error}</p>
+        ) : (
+            <div className="overflow-x-hidden mt-8">
+              <div className="px-2 md:grid  md:grid-cols-4   sm:gap-8 ">
+                <aside className="border-gray-300 border-4 rounded bg-white">
+                  <header className="bg-[#162235] p-4 text-lg font-bold text-white">
+                    Person
+                  </header>
+                  <div className="p-4 grid grid-cols-2 md:grid-cols-1 gap-y-2">
+                    <div>
+                      <p className="font-bold">Name</p>
+                      <input
+                          className="w-[100%] block border-none outline-none text-xs sm:text-base "
+                          type="text"
+                          name=""
+                          id=""
+                          value={user?.name?.S}
+                          readOnly
+                      />
+                    </div>
 
-                <div>
-                  <p className="font-bold">Organization</p>
-                  <input
-                    className="w-[100%] block border-none outline-none  text-xs sm:text-base"
-                    type="text"
-                    name=""
-                    id=""
-                    value={user?.org?.S}
-                    readOnly
-                  />
-                </div>
+                    <div>
+                      <p className="font-bold">Organization</p>
+                      <input
+                          className="w-[100%] block border-none outline-none  text-xs sm:text-base"
+                          type="text"
+                          name=""
+                          id=""
+                          value={user?.org?.S}
+                          readOnly
+                      />
+                    </div>
 
 
-                <div>
-                  <p className="font-bold">Type</p>
-                  <input
-                    className="w-[100%] block border-none outline-none  text-xs sm:text-base"
-                    type="text"
-                    name=""
-                    id=""
-                    value={user?.member_type?.S}
-                    readOnly
-                  />
-                </div>
+                    <div>
+                      <p className="font-bold">Type</p>
+                      <input
+                          className="w-[100%] block border-none outline-none  text-xs sm:text-base"
+                          type="text"
+                          name=""
+                          id=""
+                          value={user?.member_type?.S}
+                          readOnly
+                      />
+                    </div>
 
-                <div>
-                  <p className="font-bold">Joined Date</p>
-                  <input
-                    className="w-[100%] block border-none outline-none  text-xs sm:text-base"
-                    type="text"
-                    name=""
-                    id=""
-                    value={user?.date_joined?.S}
-                    readOnly
-                  />
-                </div>
+                    <div>
+                      <p className="font-bold">Joined Date</p>
+                      <input
+                          className="w-[100%] block border-none outline-none  text-xs sm:text-base"
+                          type="text"
+                          name=""
+                          id=""
+                          value={user?.date_joined?.S}
+                          readOnly
+                      />
+                    </div>
 
-                <div>
-                  <p className="font-bold">Expiry Date</p>
-                  <input
-                    className="w-[100%] block border-none outline-none  text-xs sm:text-base"
-                    type="text"
-                    name=""
-                    id=""
-                    value={user?.expiry?.S}
-                    readOnly
-                  />
-                </div>
+                    <div>
+                      <p className="font-bold">Expiry Date</p>
+                      <input
+                          className="w-[100%] block border-none outline-none  text-xs sm:text-base"
+                          type="text"
+                          name=""
+                          id=""
+                          value={user?.expiry?.S}
+                          readOnly
+                      />
+                    </div>
 
-                <div>
-                  <p className="font-bold">Address</p>
-                  <textarea
-                    className=" block border-none outline-none  text-xs sm:text-base"
-                    name=""
-                    id=""
-                    readOnly
-                    ref={billingAddressTextareaRef}
-                    onChange={() =>
-                      adjustTextareaHeight(billingAddressTextareaRef)
-                    }
-                    value={user?.address?.S}
-                    style={{ resize: "none" }}
-                  ></textarea>
+                    <div>
+                      <p className="font-bold">Address</p>
+                      <textarea
+                          className=" block border-none outline-none  text-xs sm:text-base"
+                          name=""
+                          id=""
+                          readOnly
+                          ref={billingAddressTextareaRef}
+                          onChange={() =>
+                              adjustTextareaHeight(billingAddressTextareaRef)
+                          }
+                          value={user?.address?.S}
+                          style={{ resize: "none" }}
+                      ></textarea>
 
-                </div>
+                    </div>
 
-              </div>
-            </aside>
-            <article className="border-gray-300 border-4 rounded sm:col-span-3 bg-white">
-              <header className="flex justify-between items-center p-4 text-lg font-bold border-b-2 border-[#BCC7CC] bg-gray-100 ">
-                <h1>
-                  Workout Quotes
-                </h1>
+                  </div>
+                </aside>
+                <article className="border-gray-300 border-4 rounded sm:col-span-3 bg-white">
+                  <header className="flex justify-between items-center p-4 text-lg font-bold border-b-2 border-[#BCC7CC] bg-gray-100 ">
+                    <h1>
+                      Workout History
+                    </h1>
 
-                <Button
-                  variant="outlined"
-                  size={buttonSize}
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
-                  endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-                >
-                  {selectedMenuItem}
-                </Button>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                >
-                  {
-                    selectedMenuItem !== "Last 1 year" && (
-                      <MenuItem
-                        onClick={() => {
-                          handleClose();
-                          setSelectedMenuItem("Last 1 year")
-                        }}
-                      >
-                        Last 1 year
-                      </MenuItem>
-                    )
-                  }
-
-                  {
-                    selectedMenuItem !== "Last 2 years" && (
-                      <MenuItem
-                        onClick={() => {
-                          handleClose();
-                          setSelectedMenuItem("Last 2 years")
-                        }}
-                      >
-                        Last 2 years
-                      </MenuItem>
-                    )
-                  }
-
-                  {selectedMenuItem !== "Last 3 Months" && (
-                    <MenuItem
-                      onClick={() => {
-                        handleClose();
-                        setSelectedMenuItem("Last 3 Months");
-                      }}
+                    <Button
+                        variant="outlined"
+                        size={buttonSize}
+                        id="basic-button"
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={handleClick}
+                        endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     >
-                      Last 3 Months
-                    </MenuItem>
-                  )}
+                      {selectedMenuItem}
+                    </Button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                    >
+                      {
+                          selectedMenuItem !== "Last 1 year" && (
+                              <MenuItem
+                                  onClick={() => {
+                                    handleClose();
+                                    setSelectedMenuItem("Last 1 year")
+                                  }}
+                              >
+                                Last 1 year
+                              </MenuItem>
+                          )
+                      }
+
+                      {
+                          selectedMenuItem !== "Last 2 years" && (
+                              <MenuItem
+                                  onClick={() => {
+                                    handleClose();
+                                    setSelectedMenuItem("Last 2 years")
+                                  }}
+                              >
+                                Last 2 years
+                              </MenuItem>
+                          )
+                      }
+
+                      {selectedMenuItem !== "Last 3 Months" && (
+                          <MenuItem
+                              onClick={() => {
+                                handleClose();
+                                setSelectedMenuItem("Last 3 Months");
+                              }}
+                          >
+                            Last 3 Months
+                          </MenuItem>
+                      )}
 
 
-                </Menu>
-              </header>
-              <Paper
-                sx={{
-                  width: "100%",
-                }}
-              >
-                {
-                  userStats.length > 0 ? <DataGrid
-                    rows={userStats}
-                    columns={columns}
-                    initialState={{
-                      pagination: {
-                        paginationModel: { page: 0, pageSize: 10 },
-                      },
-                    }}
-                    pageSizeOptions={[5, 10]}
+                    </Menu>
+                  </header>
+                  <Paper
+                      sx={{
+                        width: "100%",
+                      }}
+                  >
+                    {
+                      userStats.length > 0 ? <DataGrid
+                          rows={userStats}
+                          columns={columns}
+                          initialState={{
+                            pagination: {
+                              paginationModel: { page: 0, pageSize: 10 },
+                            },
+                          }}
+                          pageSizeOptions={[5, 10]}
 
-                  /> : <Typography variant="h1" gutterBottom>No Data found</Typography>
-                }
+                      /> : <Typography variant="h1" gutterBottom>
+                        No history recorded yet for this member
+                      </Typography>
+                    }
 
 
-              </Paper>
-            </article>
-          </div>
-        </div>
-      )}
-    </main>
+                  </Paper>
+                </article>
+              </div>
+            </div>
+        )}
+      </main>
   );
 };
 export default MemberDetail;

@@ -69,6 +69,7 @@ const AccountContextProvider = ({ children }) => {
           const { idToken, accessToken } = data;
           localStorage.setItem("idToken", idToken.jwtToken);
           localStorage.setItem("accessToken", accessToken.jwtToken);
+          localStorage.setItem("loggedinAt", '');
           checkAuthentication();
           resolve(data);
         },
@@ -95,13 +96,13 @@ const AccountContextProvider = ({ children }) => {
   };
   console.log(isAuthenticated);
   return (
-    <>
-      <Context.Provider
-        value={{ authenticate, getSession, logout, isAuthenticated }}
-      >
-        {children}
-      </Context.Provider>
-    </>
+      <>
+        <Context.Provider
+            value={{ authenticate, getSession, logout, isAuthenticated }}
+        >
+          {children}
+        </Context.Provider>
+      </>
   );
 };
 

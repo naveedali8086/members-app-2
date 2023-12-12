@@ -31,15 +31,15 @@ import {
 import { Pie, Line } from "react-chartjs-2";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend
 );
 
 export const options = {
@@ -51,7 +51,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: "PeakStrength",
+      text: 'Weekly Progress',
     },
   },
 };
@@ -64,7 +64,7 @@ export const options2 = {
     },
     title: {
       display: true,
-      text: "Reps Steps Comparison",
+      text: 'This Week vs Last Week',
     },
   },
 };
@@ -78,14 +78,14 @@ const Graph = () => {
   const { memberid } = useParams();
   const currentDate = new Date();
   const startOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
   );
   const endOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
   );
   const currentWeekStartDate = startOfWeek(currentDate);
   const currentWeekEndDate = endOfWeek(currentDate);
@@ -160,7 +160,7 @@ const Graph = () => {
     console.log(`${startDateFormatted} ${endDateFormatted}`);
     try {
       const res = await axiosInstance.get(
-        `/my-stats/?memberid=1234&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
+          `/my-stats/?memberid=${memberid}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
       );
       console.log(res);
       const Sort = Sorting(res.data.Items);
@@ -173,13 +173,13 @@ const Graph = () => {
             fill: true,
             label: "PeakStrength",
             data:
-              formattedDays &&
-              formattedDays(startDate, endDate, Sort).map((formattedDate) => {
-                const matchingData = Sort.find(
-                  (ele) => format(new Date(ele.date), "MMM d") === formattedDate
-                );
-                return matchingData ? matchingData.peakstrength : null;
-              }),
+                formattedDays &&
+                formattedDays(startDate, endDate, Sort).map((formattedDate) => {
+                  const matchingData = Sort.find(
+                      (ele) => format(new Date(ele.date), "MMM d") === formattedDate
+                  );
+                  return matchingData ? matchingData.peakstrength : null;
+                }),
             borderColor: "rgb(53, 162, 235)",
             backgroundColor: "rgba(53, 162, 235, 0.5)",
           },
@@ -199,17 +199,17 @@ const Graph = () => {
 
     try {
       const res = await axiosInstance.get(
-        `/my-stats/?memberid=1234&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
+          `/my-stats/?memberid=${memberid}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
       );
       console.log(res);
       if (res.data?.Items?.length > 0) {
         const totalRepsSteps = res.data.Items.reduce(
-          (total, item) => total + item.reps_steps,
-          0
+            (total, item) => total + item.reps_steps,
+            0
         );
         const daysOfTraining = res.data.Items.reduce(
-          (total, item) => total + item.didtrain,
-          0
+            (total, item) => total + item.didtrain,
+            0
         );
         setRepsSteps((prevData) => [...prevData, totalRepsSteps]);
         if (isCurrentWeek) {
@@ -241,76 +241,78 @@ const Graph = () => {
 
   console.log(strength);
   return (
-    <div className="min-h-[100vh]  bg-gray-100">
-      <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
-        <Button
-          size={buttonSize}
-          variant="contained"
-          onClick={() => navigate(`/detail/${memberid}`)}
-          style={{ backgroundColor: "#ffffff", color: "#000000" }}
-          startIcon={<ArrowBackIosIcon style={{ color: "#24FDF7" }} />}
-        >
-          Back To Detail
-        </Button>
-      </header>
-      { error ? (
-        <p>{error.message}</p>
-      ) : (
-        <div>
-          <div className="flex flex-col sm:flex-row  justify-end items-center p-2">
-            <div className="pb-2 flex sm:pb-0">
-              <DatePicker
-                className=" outline-line border-2 border-2 solid"
-                selected={startDate}
-                onChange={(date) => setStartDate(startOfDay(date))}
-              />
-              <DatePicker
-                className=" outline-line border-2 border-2 solid mr-2"
-                selected={endDate}
-                onChange={(date) => setEndDate(endOfDay(date))}
-              />
-            </div>
+      <div className="min-h-[100vh]  bg-gray-100">
+        <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
+          <Button
+              size={buttonSize}
+              variant="contained"
+              onClick={() => navigate(`/detail/${memberid}`)}
+              style={{ backgroundColor: "#ffffff", color: "#000000" }}
+              startIcon={<ArrowBackIosIcon style={{ color: "#24FDF7" }} />}
+          >
+            Back To Detail
+          </Button>
+        </header>
+        { error ? (
+            <p>{error.message}</p>
+        ) : (
+            <div>
+              <div className="flex flex-col sm:flex-row  justify-end items-center p-2">
+                <div className="pb-2 flex sm:pb-0">
+                  <DatePicker
+                      className=" outline-line border-2 border-2 solid"
+                      selected={startDate}
+                      onChange={(date) => setStartDate(startOfDay(date))}
+                      dateFormat="dd/MM/yyyy"
+                  />
+                  <DatePicker
+                      className=" outline-line border-2 border-2 solid mr-2"
+                      selected={endDate}
+                      onChange={(date) => setEndDate(endOfDay(date))}
+                      dateFormat="dd/MM/yyyy"
+                  />
+                </div>
 
-            <Button size={buttonSize} variant="outlined" onClick={fetchData}>
-              Fetch Data
-            </Button>
-          </div>
+                <Button size={buttonSize} variant="outlined" onClick={fetchData}>
+                  Fetch Data
+                </Button>
+              </div>
 
-          <div className="grid grid-cols-1 grid-rows-4  sm:grid-cols-4 sm:grid-rows-3 bg-white  gap-x-4 sm:px-2">
-            <div className=" row-span-1 border-gray-300 border-4 rounded bg-white flex flex-col">
-              <header className="bg-[#162235] p-2 lg:p-4 text-lg font-bold text-white">
-                Person
-              </header>
-              <p className="flex-1 text-8xl sm:text-4xl lg:text-8xl flex items-center justify-center">
-                {trainDays}
-              </p>
-            </div>
+              <div className="grid grid-cols-1 grid-rows-4  sm:grid-cols-4 sm:grid-rows-3 bg-white  gap-x-4 sm:px-2">
+                <div className=" row-span-1 border-gray-300 border-4 rounded bg-white flex flex-col">
+                  <header className="bg-[#162235] p-2 lg:p-4 text-lg font-bold text-white">
+                    Days Worked Out
+                  </header>
+                  <p className="flex-1 text-8xl sm:text-4xl lg:text-8xl flex items-center justify-center">
+                    {trainDays}
+                  </p>
+                </div>
 
-            <div className=" row-span-1  sm:col-span-3 sm:row-span-3 border-gray-300 border-4 rounded bg-white">
-              <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
-                Person
-              </header>
-              {strength.length > 0 ? (
-                <Line options={options} data={chartData} />
-              ) : (
-                <p>No Data found</p>
-              )}
-            </div>
+                <div className=" row-span-1  sm:col-span-3 sm:row-span-3 border-gray-300 border-4 rounded bg-white">
+                  <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
+                    Weekly Progress
+                  </header>
+                  {strength.length > 0 ? (
+                      <Line options={options} data={chartData} />
+                  ) : (
+                      <p>No Data found</p>
+                  )}
+                </div>
 
-            <div className="sm:mt-4 row-span-2  border-gray-300 border-4 rounded bg-white">
-              <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
-                Person
-              </header>
-              {repsSteps.length > 0 ? (
-                <Pie options={options2} data={data2} />
-              ) : (
-                <p>No Data Found</p>
-              )}
+                <div className="sm:mt-4 row-span-2  border-gray-300 border-4 rounded bg-white">
+                  <header className="bg-[#162235]  p-2 lg:p-4 text-lg font-bold text-white">
+                    This Week vs Last Week
+                  </header>
+                  {repsSteps.length > 0 ? (
+                      <Pie options={options2} data={data2} />
+                  ) : (
+                      <p>No Data Found</p>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
   );
 };
 
