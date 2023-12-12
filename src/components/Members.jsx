@@ -33,8 +33,8 @@ const Members = () => {
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState("");
   const [showPopUp, setShowPopUp] = useState(false);
-  const [editPopUp , setEditPopUp] = useState(false);
-  const [editableMember, setEditableMember] =useState({});
+  const [editPopUp, setEditPopUp] = useState(false);
+  const [editableMember, setEditableMember] = useState({});
   const Sorting = (array) => {
     let sorrtedArry = [];
     let obj = {};
@@ -67,22 +67,20 @@ const Members = () => {
     } finally {
       setIsloading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-
     getMembers();
-
   }, []);
-  const handleCustomAction = (params)=>{
-    const id =  params.row.memberid
-    const editMember = userList.filter((member)=> member.id === id)
-    if(editMember.length > 0) {
-      setEditableMember(editMember[0])
-      setEditPopUp(true)
-      setShowPopUp(true)
+  const handleCustomAction = (params) => {
+    const id = params.row.memberid;
+    const editMember = userList.filter((member) => member.id === id);
+    if (editMember.length > 0) {
+      setEditableMember(editMember[0]);
+      setEditPopUp(true);
+      setShowPopUp(true);
     }
-  }
+  };
 
   const columns = [
     {
@@ -98,10 +96,10 @@ const Members = () => {
             size="small"
             onClick={() => handleCustomAction(params)}
           >
-             Edit
+            Edit
           </Button>
         </div>
-      )
+      ),
     },
     {
       field: "picture",
@@ -148,13 +146,12 @@ const Members = () => {
     let timeoutId;
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      const results = userList.filter(obj =>
-        obj.name.split(" ").join('').toLowerCase().includes(searchInput)
+      const results = userList.filter((obj) =>
+        obj.name.split(" ").join("").toLowerCase().includes(searchInput)
       );
-      setUserFilteredList(results)
+      setUserFilteredList(results);
     }, 500);
-
-  }
+  };
 
   return (
     <>
@@ -175,7 +172,6 @@ const Members = () => {
             >
               Add Member
             </Button>
-
           </Box>
         </header>
         {isLoading ? (
@@ -223,10 +219,18 @@ const Members = () => {
         )}
       </main>
       <div
-        className={` ${showPopUp ? "" : "hidden"
-          } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
+        className={` ${
+          showPopUp ? "" : "hidden"
+        } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
       >
-        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} editPopUp={editPopUp} setEditPopUp={setEditPopUp} editableMember={editableMember} />
+        <PopUp
+          setShowPopUp={setShowPopUp}
+          showPopUp={showPopUp}
+          getmembers={getMembers}
+          editPopUp={editPopUp}
+          setEditPopUp={setEditPopUp}
+          editableMember={editableMember}
+        />
       </div>
     </>
   );
