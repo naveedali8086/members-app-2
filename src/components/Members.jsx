@@ -72,15 +72,7 @@ const Members = () => {
   useEffect(() => {
     getMembers();
   }, []);
-  const handleCustomAction = (params) => {
-    const id = params.row.memberid;
-    const editMember = userList.filter((member) => member.id === id);
-    if (editMember.length > 0) {
-      setEditableMember(editMember[0]);
-      setEditPopUp(true);
-      setShowPopUp(true);
-    }
-  };
+
 
   const columns = [
     {
@@ -94,7 +86,6 @@ const Members = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => handleCustomAction(params)}
           >
             Edit
           </Button>
@@ -107,11 +98,11 @@ const Members = () => {
       sortable: false,
       width: 50,
       renderCell: (params) => (
-          <img
-              src={params.row.picture || `${window.location.origin}/blankmale.jpg`}
-              alt="User"
-              style={{ width: 40, borderRadius: "50%" }}
-          />
+        <img
+          src={params.row.picture || `${window.location.origin}/blankmale.jpg`}
+          alt="User"
+          style={{ width: 40, borderRadius: "50%" }}
+        />
       ),
     },
     { field: "memberid", headerName: "No", width: 30 },
@@ -121,7 +112,7 @@ const Members = () => {
       headerName: "Name",
       width: 150,
       renderCell: (params) => (
-          <span style={{ color: "#2667ad", cursor: "pointer" }}>
+        <span style={{ color: "#2667ad", cursor: "pointer" }}>
           {params.row.name}
         </span>
       ),
@@ -139,12 +130,15 @@ const Members = () => {
       const clickedRowData = params.row.memberid;
       navigate(`/detail/${clickedRowData}`);
     } else if (params.field === "edit") {
-      setEditableMember(params.row)
+      let TrimedObject = {}
+      Object.keys(params.row).map((key) => {
+        TrimedObject[key] = params.row[key].trimStart();
+      })
+      setEditableMember(TrimedObject)
       setEditPopUp(true)
       setShowPopUp(true)
     }
   };
-
   const handleSearch = (e) => {
     const searchInput = e.target.value.toLowerCase();
     let timeoutId;
@@ -158,77 +152,77 @@ const Members = () => {
   };
 
   return (
-      <>
-        <main className="min-h-[100vh]  bg-gray-100 ">
-          <header className="bg-[#223A5E] p-2">
-            <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: "20px",
-                }}
+    <>
+      <main className="min-h-[100vh]  bg-gray-100 ">
+        <header className="bg-[#223A5E] p-2">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "20px",
+            }}
+          >
+            <Button
+              size={buttonSize}
+              onClick={() => setShowPopUp(true)}
+              variant="contained"
+              style={{ backgroundColor: "#24FDF7", color: "#000000" }}
             >
-              <Button
-                  size={buttonSize}
-                  onClick={() => setShowPopUp(true)}
-                  variant="contained"
-                  style={{ backgroundColor: "#24FDF7", color: "#000000" }}
-              >
-                Add Member
-              </Button>
+              Add Member
+            </Button>
 
-            </Box>
-          </header>
-          {isLoading ? (
-              <span className=" h-[100vh] flex justify-center items-center">
+          </Box>
+        </header>
+        {isLoading ? (
+          <span className=" h-[100vh] flex justify-center items-center">
             <Spinner />
           </span>
-          ) : error ? (
-              <p>{error}</p>
-          ) : (
-              <div
-                  className={`
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div
+            className={`
              
              w-[100%]  p-2  `}
-              >
-                <Box pb="10px">
-                  <TextField
-                      name="name"
-                      variant="outlined"
-                      label="Search"
-                      type="text"
-                      color="primary"
-                      onChange={handleSearch}
-                  />
-                </Box>
-                <Paper
-                    sx={{
-                      width: "100%",
-                    }}
-                >
-                  <DataGrid
-                      className='border-gray-300 border-4 rounded'
-                      rows={userFilteredList}
-                      columns={columns}
-                      initialState={{
-                        pagination: {
-                          paginationModel: { page: 0, pageSize: 10 },
-                        },
-                      }}
-                      pageSizeOptions={[5, 10]}
-                      onCellClick={handleCellClick}
-                  />
-                </Paper>
-              </div>
-          )}
-        </main>
-        <div
-            className={` ${showPopUp ? "" : "hidden"
-            } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
-        >
-          <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} editPopUp={editPopUp} setEditPopUp={setEditPopUp} editableMember={editableMember} />
-        </div>
-      </>
+          >
+            <Box pb="10px">
+              <TextField
+                name="name"
+                variant="outlined"
+                label="Search"
+                type="text"
+                color="primary"
+                onChange={handleSearch}
+              />
+            </Box>
+            <Paper
+              sx={{
+                width: "100%",
+              }}
+            >
+              <DataGrid
+                className='border-gray-300 border-4 rounded'
+                rows={userFilteredList}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                onCellClick={handleCellClick}
+              />
+            </Paper>
+          </div>
+        )}
+      </main>
+      <div
+        className={` ${showPopUp ? "" : "hidden"
+          } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
+      >
+        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} editPopUp={editPopUp} setEditPopUp={setEditPopUp} editableMember={editableMember} />
+      </div>
+    </>
   );
 };
 

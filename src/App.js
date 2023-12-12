@@ -13,7 +13,7 @@ const Graphs = lazy(() => import("./components/Graph"))
 function App() {
    const {pathname} = useLocation()
    const Title = pathname.split('/')[1]
-     console.log(Title);
+    //  console.log(Title);
 
    useEffect(()=>{
     document.title = `Insquare remotePT-${Title?Title:""}`; 

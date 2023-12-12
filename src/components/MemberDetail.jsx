@@ -52,6 +52,7 @@ const MemberDetail = () => {
       try {
         setIsloading(true);
         const res = await axiosInstance.get(`/get-list/?memberid=${memberid}`);
+        // console.log(res.data.Item);
         setUser(res.data.Item);
       } catch (err) {
         setError(err.message);
@@ -105,7 +106,7 @@ const MemberDetail = () => {
   useEffect(() => {
     const getMemberStats = async () => {
       try {
-        console.log("inside", startDate);
+        // console.log("inside", startDate);
         const todayDate = format(new Date(), "yyyy-MM-dd")
         const res = await axiosInstance.get(`/my-stats/?memberid=${memberid}&startDate=${startDate}&endDate=${todayDate}`)
         // console.log(res);

@@ -157,13 +157,14 @@ const Graph = () => {
   const getStats = async () => {
     const startDateFormatted = await formatDateForURL(startDate);
     const endDateFormatted = await formatDateForURL(endDate);
-    console.log(`${startDateFormatted} ${endDateFormatted}`);
+    // console.log(`${startDateFormatted} ${endDateFormatted}`);
     try {
       const res = await axiosInstance.get(
           `/my-stats/?memberid=${memberid}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
       );
-      console.log(res);
+      // console.log(res);
       const Sort = Sorting(res.data.Items);
+      console.log("peakstrength",res.data.Items);
       setStrength(Sort);
 
       const updatedChartData = {
@@ -198,10 +199,11 @@ const Graph = () => {
     const endDateFormatted = formatDateForURL(endDate);
 
     try {
+      console.log( `${startDateFormatted} - ${endDateFormatted}`);
       const res = await axiosInstance.get(
           `/my-stats/?memberid=${memberid}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
       );
-      console.log(res);
+      // console.log("steps",res);
       if (res.data?.Items?.length > 0) {
         const totalRepsSteps = res.data.Items.reduce(
             (total, item) => total + item.reps_steps,
@@ -223,6 +225,7 @@ const Graph = () => {
   };
 
   const Steps = () => {
+    // console.log(`${currentWeekStartDate} - ${currentWeekEndDate}`);
     getTotalRepsSteps(currentWeekStartDate, currentWeekEndDate, true);
     getTotalRepsSteps(lastWeekStartDate, lastWeekEndDate, false);
   };
@@ -239,7 +242,7 @@ const Graph = () => {
     getStats();
   };
 
-  console.log(strength);
+  // console.log(strength);
   return (
       <div className="min-h-[100vh]  bg-gray-100">
         <header className="px-2 py-2 bg-[#223A5E] flex items-center justify-between">
