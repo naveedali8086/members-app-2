@@ -113,12 +113,11 @@ const Signup = ({ goToSection }) => {
     }
 
     if (formData.phone) {
-      if (!formData.phone.startsWith("04")) {
-        message.phoneErr = 'Phone number must start with 04';
+      if (!formData.phone.startsWith("4") && !formData.phone.startsWith("04")
+          && !formData.phone.startsWith("+614") && !formData.phone.startsWith("00614")) {
+        message.phoneErr = 'Phone number must start with country code';
       } else if (isNaN(formData.phone)) {
         message.phoneErr = 'Phone number is not a valid';
-      } else if (formData.phone.length !== 10) {
-        message.phoneErr = 'phone number must have 10 digits'
       }
     }
     if (Object.keys(message).length > 0) {

@@ -74,56 +74,45 @@ const Members = () => {
     getMembers();
 
   }, []);
-  const handleCustomAction = (params)=>{
-    const id =  params.row.memberid
-    const editMember = userList.filter((member)=> member.id === id)
-    if(editMember.length > 0) {
-      setEditableMember(editMember[0])
-      setEditPopUp(true)
-      setShowPopUp(true)
-    }
-  }
-
   const columns = [
     {
-      field: "actions", // Field name for the custom column
-      headerName: "Actions",
+      field: "edit", // Field name for the custom column
+      headerName: "Edit",
       sortable: false,
       width: 150,
       renderCell: (params) => (
-        <div>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() => handleCustomAction(params)}
-          >
-             Edit
-          </Button>
-        </div>
+          <div>
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+            >
+              Edit
+            </Button>
+          </div>
       )
     },
     {
       field: "picture",
-      headerName: "Image",
+      headerName: "",
       sortable: false,
       width: 50,
       renderCell: (params) => (
-        <img
-          src={params.row.picture || ""}
-          alt="User"
-          style={{ width: 40, borderRadius: "50%" }}
-        />
+          <img
+              src={params.row.picture || `${window.location.origin}/blankmale.jpg`}
+              alt="User"
+              style={{ width: 40, borderRadius: "50%" }}
+          />
       ),
     },
-    { field: "memberid", headerName: "No", width: 130 },
-    { field: "date_joined", headerName: "Date Joined", width: 130 },
+    { field: "memberid", headerName: "No", width: 30 },
+    { field: "date_joined", headerName: "Joined on", width: 130 },
     {
       field: "name",
       headerName: "Name",
       width: 150,
       renderCell: (params) => (
-        <span style={{ color: "#2667ad", cursor: "pointer" }}>
+          <span style={{ color: "#2667ad", cursor: "pointer" }}>
           {params.row.name}
         </span>
       ),
@@ -140,6 +129,10 @@ const Members = () => {
     if (params.field === "name") {
       const clickedRowData = params.row.memberid;
       navigate(`/detail/${clickedRowData}`);
+    } else if (params.field === "edit") {
+      setEditableMember(params.row)
+      setEditPopUp(true)
+      setShowPopUp(true)
     }
   };
 
@@ -149,7 +142,7 @@ const Members = () => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       const results = userList.filter(obj =>
-        obj.name.split(" ").join('').toLowerCase().includes(searchInput)
+          obj.name.split(" ").join('').toLowerCase().includes(searchInput)
       );
       setUserFilteredList(results)
     }, 500);
@@ -157,78 +150,77 @@ const Members = () => {
   }
 
   return (
-    <>
-      <main className="min-h-[100vh]  bg-gray-100 ">
-        <header className="bg-[#223A5E] p-2">
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "20px",
-            }}
-          >
-            <Button
-              size={buttonSize}
-              onClick={() => setShowPopUp(true)}
-              variant="contained"
-              style={{ backgroundColor: "#24FDF7", color: "#000000" }}
+      <>
+        <main className="min-h-[100vh]  bg-gray-100 ">
+          <header className="bg-[#223A5E] p-2">
+            <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "20px",
+                }}
             >
-              Add Member
-            </Button>
+              <Button
+                  size={buttonSize}
+                  onClick={() => setShowPopUp(true)}
+                  variant="contained"
+                  style={{ backgroundColor: "#24FDF7", color: "#000000" }}
+              >
+                Add Member
+              </Button>
 
-          </Box>
-        </header>
-        {isLoading ? (
-          <span className=" h-[100vh] flex justify-center items-center">
+            </Box>
+          </header>
+          {isLoading ? (
+              <span className=" h-[100vh] flex justify-center items-center">
             <Spinner />
           </span>
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
-          <div
-            className={`
+          ) : error ? (
+              <p>{error}</p>
+          ) : (
+              <div
+                  className={`
              
              w-[100%]  p-2  `}
-          >
-            <Box pb="10px">
-              <TextField
-                name="name"
-                variant="outlined"
-                label="Search"
-                type="text"
-                color="primary"
-                onChange={handleSearch}
-              />
-            </Box>
-            <Paper
-              sx={{
-                width: "100%",
-              }}
-            >
-              <DataGrid
-                // className='border-gray-300 border-4 rounded'
-                rows={userFilteredList}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: { page: 0, pageSize: 10 },
-                  },
-                }}
-                pageSizeOptions={[5, 10]}
-                checkboxSelection
-                onCellClick={handleCellClick}
-              />
-            </Paper>
-          </div>
-        )}
-      </main>
-      <div
-        className={` ${showPopUp ? "" : "hidden"
-          } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
-      >
-        <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} editPopUp={editPopUp} setEditPopUp={setEditPopUp} editableMember={editableMember} />
-      </div>
-    </>
+              >
+                <Box pb="10px">
+                  <TextField
+                      name="name"
+                      variant="outlined"
+                      label="Search"
+                      type="text"
+                      color="primary"
+                      onChange={handleSearch}
+                  />
+                </Box>
+                <Paper
+                    sx={{
+                      width: "100%",
+                    }}
+                >
+                  <DataGrid
+                      className='border-gray-300 border-4 rounded'
+                      rows={userFilteredList}
+                      columns={columns}
+                      initialState={{
+                        pagination: {
+                          paginationModel: { page: 0, pageSize: 10 },
+                        },
+                      }}
+                      pageSizeOptions={[5, 10]}
+                      onCellClick={handleCellClick}
+                  />
+                </Paper>
+              </div>
+          )}
+        </main>
+        <div
+            className={` ${showPopUp ? "" : "hidden"
+            } fixed top-0 w-[100%] h-[100%] bg-[#00001352] flex z-50`}
+        >
+          <PopUp setShowPopUp={setShowPopUp} showPopUp={showPopUp} getmembers={getMembers} editPopUp={editPopUp} setEditPopUp={setEditPopUp} editableMember={editableMember} />
+        </div>
+      </>
   );
 };
 
