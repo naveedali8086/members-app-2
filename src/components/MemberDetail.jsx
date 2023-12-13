@@ -53,7 +53,11 @@ const MemberDetail = () => {
         setIsloading(true);
         const res = await axiosInstance.get(`/get-list/?memberid=${memberid}`);
         // console.log(res.data.Item);
-        setUser(res.data.Item);
+        let TrimmedObject = {};
+        Object.keys(res.data.Item).forEach((key) => {
+          TrimmedObject[key] = Object.values(res.data.Item[key])[0].trimStart();
+        })
+        setUser(TrimmedObject);
       } catch (err) {
         setError(err.message);
         console.error(err);
@@ -63,6 +67,7 @@ const MemberDetail = () => {
     };
     getMemberDetails();
   }, [isAuthenticated, memberid, navigate]);
+  console.log(user);
   const Sorting = (array) => {
     let sorrtedArry = [];
     let obj = {};
@@ -151,7 +156,7 @@ const MemberDetail = () => {
             Back To People
           </Button>
           <div>
-            <p className="font-bold text-xl italic text-white  inline-block pr-2" >{user?.status?.S}</p>
+            <p className="font-bold text-xl italic text-white  inline-block pr-2" >{user?.status}</p>
             <Button size={buttonSize}
 
                     variant="contained"
@@ -185,7 +190,7 @@ const MemberDetail = () => {
                           type="text"
                           name=""
                           id=""
-                          value={user?.name?.S}
+                          value={user?.name}
                           readOnly
                       />
                     </div>
@@ -197,7 +202,7 @@ const MemberDetail = () => {
                           type="text"
                           name=""
                           id=""
-                          value={user?.org?.S}
+                          value={user?.org}
                           readOnly
                       />
                     </div>
@@ -210,7 +215,7 @@ const MemberDetail = () => {
                           type="text"
                           name=""
                           id=""
-                          value={user?.member_type?.S}
+                          value={user?.member_type}
                           readOnly
                       />
                     </div>
@@ -222,7 +227,7 @@ const MemberDetail = () => {
                           type="text"
                           name=""
                           id=""
-                          value={user?.date_joined?.S}
+                          value={user?.date_joined}
                           readOnly
                       />
                     </div>
@@ -234,7 +239,7 @@ const MemberDetail = () => {
                           type="text"
                           name=""
                           id=""
-                          value={user?.expiry?.S}
+                          value={user?.expiry}
                           readOnly
                       />
                     </div>
@@ -250,7 +255,7 @@ const MemberDetail = () => {
                           onChange={() =>
                               adjustTextareaHeight(billingAddressTextareaRef)
                           }
-                          value={user?.address?.S}
+                          value={user?.address}
                           style={{ resize: "none" }}
                       ></textarea>
 

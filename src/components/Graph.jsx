@@ -96,28 +96,25 @@ const Graph = () => {
   const [strength, setStrength] = useState([]);
   const [chartData, setChartData] = useState({});
   const [error, setError] = useState("");
+
+
   const formattedDays = (startDate, endDate, data) => {
     const daysInInterval = eachDayOfInterval({
       start: startDate,
       end: endDate,
     });
+    // console.log(daysInInterval);
     const dataDates = data.map((ele) => new Date(ele.date));
-    const allDates = [...daysInInterval, ...dataDates];
-    const uniqueDates = Array.from(new Set(allDates));
-    return uniqueDates.map((date) => format(date, "MMM d"));
+    
+    const uniqueDatesSet = new Set(daysInInterval.map(date => format(date, "yyyy/MM/dd")));
+  
+    for (const date of dataDates) {
+      uniqueDatesSet.add(format(date, "yyyy/MM/dd"));
+    }
+  
+    return Array.from(uniqueDatesSet);
   };
-  // const data1 = {
-  //   labels: strength.map((ele) => format(new Date(ele.date), 'MMM d')),
-  //   datasets: [
-  //     {
-  //       fill: true,
-  //       label: 'PeakStrength',
-  //       data: strength.map((ele) => ele.peakstrength),
-  //       borderColor: 'rgb(53, 162, 235)',
-  //       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //     },
-  //   ],
-  // };
+  
   const labels = ["Current Week", "Last Week"];
   const [repsSteps, setRepsSteps] = useState([]);
   const [trainDays, setTrainDays] = useState(0);
@@ -162,12 +159,12 @@ const Graph = () => {
       const res = await axiosInstance.get(
           `/my-stats/?memberid=${memberid}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`
       );
-      // console.log(res);
       const Sort = Sorting(res.data.Items);
       console.log("peakstrength",res.data.Items);
       setStrength(Sort);
-
+         console.log(formattedDays(startDate, endDate, Sort));
       const updatedChartData = {
+        
         labels: formattedDays && formattedDays(startDate, endDate, Sort),
         datasets: [
           {
@@ -177,7 +174,7 @@ const Graph = () => {
                 formattedDays &&
                 formattedDays(startDate, endDate, Sort).map((formattedDate) => {
                   const matchingData = Sort.find(
-                      (ele) => format(new Date(ele.date), "MMM d") === formattedDate
+                      (ele) => format(new Date(ele.date),  "yyyy/MM/dd") === formattedDate
                   );
                   return matchingData ? matchingData.peakstrength : null;
                 }),
